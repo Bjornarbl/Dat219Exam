@@ -1,0 +1,12 @@
+.vscode
+
+*.pyc
+*.swp
+*.tmp
+
+*/bin
+*/obj
+*/published
+
+*.min.css
+*.min.js
