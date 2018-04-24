@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - hva_som_skjer</title>
+    <title>@ViewData["Title"] - Hva som skjer</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -26,13 +26,15 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">hva_som_skjer</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Hva som skjer</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Hjem</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Events">Arrangementer</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Clubs">Klubber</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Calendar">Kalender</a></li>
+
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
@@ -42,7 +44,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2018 - hva_som_skjer</p>
+            <p>&copy; 2018 - Hva som skjer</p>
         </footer>
     </div>
 

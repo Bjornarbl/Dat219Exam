@@ -15,16 +15,23 @@ namespace hva_som_skjer.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult Events()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "Liste over arangementer.";
+
+            return View();
+        }
+        
+        public IActionResult Clubs()
+        {
+            ViewData["Message"] = "List over clubs.";
 
             return View();
         }
 
-        public IActionResult Contact()
+        public IActionResult Calendar()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "Calendar of subscribed events.";
 
             return View();
         }
