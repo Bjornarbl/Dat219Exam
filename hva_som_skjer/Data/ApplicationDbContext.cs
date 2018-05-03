@@ -22,5 +22,10 @@ namespace hva_som_skjer.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        public DbSet<Models.ClubModel> Clubs { get; set; } 
+        public DbSet<Models.NewsModel> News { get; set; } 
+        public DbSet<Models.CommentModel> Comments { get; set; } 
+
     }
 }

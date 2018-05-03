@@ -1,11 +1,27 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace hva_som_skjer.Models
 {
     public class ClubModel
     {
-        public ClubModel () { }
 
+        public ClubModel() {}
+        public ClubModel(string name, string category, string description, string contact, string adress, string website, string email, int phone, int founded) 
+        { 
+            this.Name = name;
+            this.Category = category;
+            this.Description = description;
+            this.Contact = contact;
+            this.Adress = adress;
+            this.Website = website;
+            this.Email = email;
+            this.Phone = phone;
+            this.Founded = founded;
+        }
+
+        //TODO: List for admin users, news, comments and events.
+        
         public int Id { get; set; }
 
         [Required]
@@ -37,9 +53,15 @@ namespace hva_som_skjer.Models
 
         [DataType(DataType.PhoneNumber)]
         [Display(Name="Telefon")]
-        public string Phone { get; set; }
+        public int Phone { get; set; }
 
         [Display(Name="Stiftet")]
         public int Founded { get; set; }
+
+        public List<ApplicationUser> Admins { get; set; }
+
+        public List<NewsModel> NewsList { get; set; }
+        public List<CommentModel> Comments { get; set; }
+        
     }
 }

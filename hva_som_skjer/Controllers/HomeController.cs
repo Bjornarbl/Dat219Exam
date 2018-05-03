@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using hva_som_skjer.Models;
+using hva_som_skjer.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace hva_som_skjer.Controllers
 {
@@ -12,27 +14,6 @@ namespace hva_som_skjer.Controllers
     {
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Events()
-        {
-            ViewData["Message"] = "Liste over arangementer.";
-
-            return View();
-        }
-        
-        public IActionResult Clubs()
-        {
-            ViewData["Message"] = "List over clubs.";
-
-            return View();
-        }
-
-        public IActionResult Calendar()
-        {
-            ViewData["Message"] = "Calendar of subscribed events.";
-
             return View();
         }
 

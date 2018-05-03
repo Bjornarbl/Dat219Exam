@@ -1,0 +1,25 @@
+<div class="panel">
+    <div class="panel-heading">
+        <div class="text-center">
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="pull-left">
+                        <h3 class="Title">@Model.Title</h3>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <h4 class="pull-right">
+                        <small>
+                            <em>@Model.Posted.ToLongDateString()
+                                <br>@Model.Posted.ToLongTimeString()</em>
+                        </small>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <p class="Content">@Model.Content</p>
+    </div>
+</div>

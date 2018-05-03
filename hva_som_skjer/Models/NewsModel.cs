@@ -3,23 +3,26 @@ using System.ComponentModel.DataAnnotations;
 
 namespace hva_som_skjer.Models
 {
-    public class CommentModel 
+    public class NewsModel 
     {
-        public CommentModel() 
+        public NewsModel() 
         {
             Posted = DateTime.UtcNow;
         }
 
-        public CommentModel(string content, ApplicationUser author)
+        public NewsModel(string title, string content, string club)
         {
             Content = content;
             Posted = DateTime.UtcNow;
-            Author = author;
+            Club = club;
         }
 
         public int Id { get; set; }
 
-        public ApplicationUser Author { get; set; }
+        public string Club { get; set; }
+
+        [Display(Name="Tittel")]
+        public string Title { get; set; }
 
         [Display(Name="Innhold")]
         public string Content { get; set; }
