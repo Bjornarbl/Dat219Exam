@@ -16,6 +16,7 @@ using hva_som_skjer.Services;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using static System.Net.Mime.MediaTypeNames;
+using System.Reflection;
 
 namespace hva_som_skjer.Controllers
 {
@@ -448,36 +449,28 @@ namespace hva_som_skjer.Controllers
         [HttpPost]
         public async Task<IActionResult> Upload(List<IFormFile> files)
         {
-            long size = files.Sum(f => f.Length);
-
-            // full path to file in temp location
-            var filePath = Path.GetTempFileName();
-            
-
             string filename = string.Format(@"{0}.png", Guid.NewGuid());
-            foreach (var formFile in files)
-            {
-                if (formFile.Length > 0)
-                {
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await formFile.CopyToAsync(stream);
-                    }
-                }
-            }
-            /*
+            var localPath = Directory.GetCurrentDirectory();
+            string baseUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
+            string filePath = "\\data\\ProfilePictures\\"+filename;
+            string wholePath = localPath+filePath;
+            
             if (files[0].Length > 0)
             {
-                files[0]
-            }
-             */
+                using (var stream = new FileStream(wholePath, FileMode.Create))
+                {
+                    await files[0].CopyToAsync(stream);
+                }
+
+            }                   
+            //string baseUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
             
+            
+            var user = await _userManager.GetUserAsync(User);
+            user.ProfilePicture = files[0].FileName;
+            await _userManager.UpdateAsync(user);
 
-            //System.IO.File.Move(files[0].FileName,filename);
-            // process uploaded files
-            // Don't rely on or trust the FileName property without validation.
-
-            return Ok(new { count = files.Count, size, filePath});
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
