@@ -62,6 +62,8 @@ namespace hva_som_skjer.Models
 
         public string Image {get; set; }
 
+        public string BannerImage {get; set; }
+
         public List<ApplicationUser> Admins { get; set; }
 
         public List<NewsModel> NewsList { get; set; }

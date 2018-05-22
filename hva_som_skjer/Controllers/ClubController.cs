@@ -40,6 +40,11 @@ namespace hva_som_skjer.Controllers
             return View(club);
         }
 
+        public async Task<IActionResult> CreateClub()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Clubs() {
             return View(await _db.Clubs.ToListAsync());
         }

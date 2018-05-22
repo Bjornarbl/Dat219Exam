@@ -76,6 +76,18 @@
             </div>
         </div>
     </div>
+    @if(User.Identity.IsAuthenticated)
+    {
+        <div class="team-grid">
+            <div class="container">
+                <div class="intro">
+                    <h3 class="text-center"><a href="Club/CreateClub"> Oppret din egen klub </a></h3>
+
+                </div>
+            </div>
+        </div>
+    }
+    
 
 <script>
 function myFunction() {
