@@ -1,5 +1,9 @@
 @model IEnumerable<hva_som_skjer.Models.ClubModel>
 
+@{
+    ViewData["Title"] = "Klubber";
+}
+
 <body>
     <div class="team-grid">
         <div class="container">
@@ -12,7 +16,7 @@
                     <form a asp-controller="ClubController" asp-action="Clubs">
                         <div class="box" onclick="myFunction()" id="sport"  style="background-image:url(&quot;images/action-athlete-athletics-618612.jpg&quot;);">
                             <div class="cover">
-                                <h3 class="name" >Sport</h3>
+                                <h3 class="name">Sport</h3>
                             </div>
                         </div>
                     </form>
@@ -34,7 +38,7 @@
                 <div class="col-md-4 col-lg-3 item">
                     <div class="box" style="background-image:url(&quot;images/art-artist-brush-102127.jpg&quot;);">
                         <div class="cover">
-                            <h3 class="name">KUNST</h3>
+                            <h3 class="name">Kunst</h3>
                         </div>
                     </div>
                 </div>
@@ -48,7 +52,7 @@
                 <div class="col-md-4 col-lg-3 item">
                     <div class="box" style="background-image:url(&quot;images/adult-aged-baby-226616.jpg&quot;);">
                         <div class="cover">
-                            <h3 class="name" style="font-size:20;">Student-<br>forening</h3>
+                            <h3 class="name" style="font-size:20;">Utdanning</h3>
                         </div>
                     </div>
                 </div>

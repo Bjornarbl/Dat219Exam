@@ -1,7 +1,7 @@
 @model hva_som_skjer.Models.ClubModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = @Html.DisplayFor(model => model.Name);
 }
 
 <h2>@Html.DisplayFor(model => model.Name)</h2>

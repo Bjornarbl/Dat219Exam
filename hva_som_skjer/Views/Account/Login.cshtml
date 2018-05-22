@@ -5,37 +5,37 @@
 @model LoginViewModel 
 @inject SignInManager<ApplicationUser> SignInManager 
 
-@{ 
-    ViewData["Title"] = "Log in"; 
+@{
+    ViewData["Title"] = "Logg inn";
 }
 
-    <div class="login-dark" style="background-image:url(&quot;/images/arctic-aurora-aurora-borealis-258112.jpg&quot;);">
-        <form asp-route-returnurl="@ViewData[" ReturnUrl "]" method="post">
-            <h2 class="sr-only">Login Form</h2>
-            <div class="illustration">
-                <i class="icon ion-ios-locked-outline"></i>
+<div class="login-dark" style="background-image:url(&quot;/images/arctic-aurora-aurora-borealis-258112.jpg&quot;);">
+    <form asp-route-returnurl="@ViewData[" ReturnUrl "]" method="post">
+        <h2 class="sr-only">Login Form</h2>
+        <div class="illustration">
+            <i class="icon ion-ios-locked-outline"></i>
+        </div>
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <input asp-for="Email" class="form-control" type="email" placeholder="E-post">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="Password" class="form-control" type="password" placeholder="Passord">
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <a asp-for="RememberMe">
+                    <input asp-for="RememberMe" /> @Html.DisplayNameFor(m => m.RememberMe)
+                </a>
             </div>
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <input asp-for="Email" class="form-control" type="email" placeholder="E-post">
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input asp-for="Password" class="form-control" type="password" placeholder="Passord">
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <a asp-for="RememberMe">
-                        <input asp-for="RememberMe" /> @Html.DisplayNameFor(m => m.RememberMe)
-                    </a>
-                </div>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-primary btn-block" type="submit">Logg Inn</button>
-            </div>
-            <a asp-action="ForgotPassword" class="forgot">Glemt passord?</a>
-        </form>
-    </div>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary btn-block" type="submit">Logg Inn</button>
+        </div>
+        <a asp-action="ForgotPassword" class="forgot">Glemt passord?</a>
+    </form>
+</div>
 
 @section Scripts { @await Html.PartialAsync("_ValidationScriptsPartial") }
