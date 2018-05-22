@@ -37,15 +37,11 @@
             </div>
             <button type="submit" class="btn btn-default">Save</button>
         </form>
-    </div>
-    <div class="col-md-6">
-
-    </div>
-    <div class="col-md-6">
-        <form method="post" enctype="multipart/form-data">
+        <br/>
+        <form method="post" enctype="multipart/form-data" asp-controller="Manage" asp-action="Upload">
             <div class="form-group">
                 <div class="col-md-10">
-                    <p>Upload your desired profile picture:</p>
+                    <p>Upload one or more files using this form:</p>
                     <input type="file" name="files" />
                 </div>
             </div>
