@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace hva_som_skjer.Models
 {
@@ -7,7 +8,7 @@ namespace hva_som_skjer.Models
     {
 
         public ClubModel() {}
-        public ClubModel(string name, string category, string description, string contact, string adress, string website, string email, int phone, int founded) 
+        public ClubModel(string name, string category, string description, string contact, string adress, string website, string email, int phone, int founded, string image) 
         { 
             this.Name = name;
             this.Category = category;
@@ -18,6 +19,7 @@ namespace hva_som_skjer.Models
             this.Email = email;
             this.Phone = phone;
             this.Founded = founded;
+            this.Image = image;
         }
 
         //TODO: List for admin users, news, comments and events.
@@ -57,6 +59,8 @@ namespace hva_som_skjer.Models
 
         [Display(Name="Stiftet")]
         public int Founded { get; set; }
+
+        public string Image {get; set; }
 
         public List<ApplicationUser> Admins { get; set; }
 

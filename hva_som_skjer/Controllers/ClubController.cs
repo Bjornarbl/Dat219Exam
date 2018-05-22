@@ -19,9 +19,8 @@ namespace hva_som_skjer.Controllers
             _db = db;
         }
 
-        public IActionResult Index()
-        {
-            return View();
+        public async Task<IActionResult> Index() {
+            return View(await _db.Clubs.ToListAsync());
         }
         
         public async Task<IActionResult> Club(int? id)
@@ -39,6 +38,10 @@ namespace hva_som_skjer.Controllers
             }
 
             return View(club);
+        }
+
+        public async Task<IActionResult> Clubs() {
+            return View(await _db.Clubs.ToListAsync());
         }
 
         public IActionResult Error()

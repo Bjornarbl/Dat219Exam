@@ -10,8 +10,18 @@ namespace hva_som_skjer.Data
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
-            context.Clubs.Add(new ClubModel(
-                "Øl, Viser og Dram", 
+                context.Clubs.AddRange(new List<ClubModel>{
+                new ClubModel("Tufte IL", 
+                "Sport", 
+                "Fotball", 
+                "Per", 
+                "Grimstad", 
+                "www.test.no", 
+                "post@test.no", 
+                23131231, 
+                1993,
+                "images/tufte.gif"),
+                new ClubModel("Øl, Viser og Dram", 
                 "Kunst og Kultur", 
                 "Studentforeningen Øl, Viser & Dram har som overordnet mål at foreningens medlemmer skal ha det mest mulig moro. Gjennom diverse arrangement skal foreningen også spre glede blandt studentmassen i Grimstad.", 
                 "Anna", 
@@ -19,7 +29,20 @@ namespace hva_som_skjer.Data
                 "www.ovd.no", 
                 "post@ovd.no", 
                 79727787, 
-                1999));
+                1999,
+                "images/ovd.png"),
+                new ClubModel("Rø", 
+                "Sport", 
+                "Håndball", 
+                "Espen", 
+                "Kråka, Blubox kjelleren, Jon Lilletunsvei 9, 4877 Grimstad", 
+                "www.ro.no", 
+                "post@ro.no", 
+                321321321, 
+                2002,
+                "images/roa.png"
+                ),
+            });
 
             context.SaveChanges();
         }

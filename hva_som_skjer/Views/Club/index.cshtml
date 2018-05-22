@@ -1,17 +1,21 @@
+@model IEnumerable<hva_som_skjer.Models.ClubModel>
+
 <body>
     <div class="team-grid">
         <div class="container">
             <div class="intro">
                 <h2 class="text-center">KLUBBER</h2>
-                <p class="text-center">Har finner du alle slags klubber som kan passer på deg </p>
+                <p class="text-center">Her finner du alle slags klubber som kan passer på deg </p>
             </div>
             <div class="row people">
                 <div class="col-md-4 col-lg-3 item">
-                    <div class="box" style="background-image:url(&quot;images/action-athlete-athletics-618612.jpg&quot;);">
-                        <div class="cover">
-                            <h3 class="name">Sport</h3>
+                    <form a asp-controller="ClubController" asp-action="Clubs">
+                        <div class="box" onclick="myFunction()" id="sport"  style="background-image:url(&quot;images/action-athlete-athletics-618612.jpg&quot;);">
+                            <div class="cover">
+                                <h3 class="name" >Sport</h3>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <div class="col-md-4 col-lg-3 item">
                     <div class="box" style="background-image:url(&quot;images/album-black-classic-167092.jpg&quot;);">
@@ -72,4 +76,11 @@
             </div>
         </div>
     </div>
+
+<script>
+function myFunction() {
+  window.location.href="@Url.Action("Clubs")";;
+}
+</script>
+
 </body>

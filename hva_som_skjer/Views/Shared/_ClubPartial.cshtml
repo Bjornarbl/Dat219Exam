@@ -1,0 +1,10 @@
+@model hva_som_skjer.Models.ClubModel
+
+@{var imagePath = @Model.Image; }
+
+<tr>
+    <td class="Image" id="Image"> <img style="height:150px" src="/@Url.Content(@imagePath)"> </td>
+    <td class="Name" id="Name"> @Model.Name</td>
+    <td class="Category" id="Category"> @Model.Category</td>
+    <td class="Contact" id="Contact"> @Model.Contact</td>
+</tr>            
