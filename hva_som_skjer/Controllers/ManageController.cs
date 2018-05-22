@@ -13,6 +13,8 @@ using Microsoft.Extensions.Options;
 using hva_som_skjer.Models;
 using hva_som_skjer.Models.ManageViewModels;
 using hva_som_skjer.Services;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace hva_som_skjer.Controllers
 {
@@ -440,6 +442,31 @@ namespace hva_som_skjer.Controllers
             _logger.LogInformation("User with id '{UserId}' has reset their authentication app key.", user.Id);
 
             return RedirectToAction(nameof(EnableAuthenticator));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Upload(List<IFormFile> files)
+        {
+            long size = files.Sum(f => f.Length);
+
+            // full path to file in temp location
+            var filePath = Path.GetTempFileName();
+
+            foreach (var formFile in files)
+            {
+                if (formFile.Length > 0)
+                {
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                }
+            }
+
+            // process uploaded files
+            // Don't rely on or trust the FileName property without validation.
+
+            return Ok(new { count = files.Count, size, filePath});
         }
 
         [HttpGet]
