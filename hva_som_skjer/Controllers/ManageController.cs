@@ -452,25 +452,24 @@ namespace hva_som_skjer.Controllers
         {
             string filename = string.Format(@"{0}.png", Guid.NewGuid());
             var localPath = Directory.GetCurrentDirectory();
-            string baseUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
             string filePath = "\\data\\ProfilePictures\\"+filename;
             string wholePath = localPath+filePath;
             
             if (files[0].Length > 0)
             {
+                var user = await _userManager.GetUserAsync(User);
+                var oldPicture = user.ProfilePicture;
+                user.ProfilePicture = filename;
+                await _userManager.UpdateAsync(user);
+
+
                 using (var stream = new FileStream(wholePath, FileMode.Create))
                 {
                     await files[0].CopyToAsync(stream);
                 }
-
-            }                   
-            //string baseUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
+                //TODO: delete old profile picture. Problem is Access to pat * is denied
+            }    
             
-            
-            var user = await _userManager.GetUserAsync(User);
-            user.ProfilePicture = files[0].FileName;
-            await _userManager.UpdateAsync(user);
-
             return RedirectToAction(nameof(Index));
         }
 
