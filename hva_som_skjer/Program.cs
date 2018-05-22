@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using hva_som_skjer.Data;
+using hva_som_skjer.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -22,8 +24,8 @@ namespace hva_som_skjer
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<ApplicationDbContext>();
-
-                ApplicationDbInitializer.Initialize(context);
+                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                ApplicationDbInitializer.Initialize(context, userManager);
             }
 
             host.Run();

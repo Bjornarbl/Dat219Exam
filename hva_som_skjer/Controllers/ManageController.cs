@@ -15,6 +15,7 @@ using hva_som_skjer.Models.ManageViewModels;
 using hva_som_skjer.Services;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace hva_som_skjer.Controllers
 {
@@ -451,7 +452,9 @@ namespace hva_som_skjer.Controllers
 
             // full path to file in temp location
             var filePath = Path.GetTempFileName();
+            
 
+            string filename = string.Format(@"{0}.png", Guid.NewGuid());
             foreach (var formFile in files)
             {
                 if (formFile.Length > 0)
@@ -462,7 +465,15 @@ namespace hva_som_skjer.Controllers
                     }
                 }
             }
+            /*
+            if (files[0].Length > 0)
+            {
+                files[0]
+            }
+             */
+            
 
+            //System.IO.File.Move(files[0].FileName,filename);
             // process uploaded files
             // Don't rely on or trust the FileName property without validation.
 
