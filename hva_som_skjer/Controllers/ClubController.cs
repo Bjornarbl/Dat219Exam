@@ -8,6 +8,7 @@ using hva_som_skjer.Models;
 using hva_som_skjer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace hva_som_skjer.Controllers
 {
@@ -50,7 +51,10 @@ namespace hva_som_skjer.Controllers
         [HttpPost]
         public async Task<IActionResult> Generate(ClubModel club)
         { 
-            //club.BannerImage = 
+            var localPath = Directory.GetCurrentDirectory();
+
+            club.Image = "images/tufte.gif";
+            club.BannerImage = "images/tufte.gif";
 
             _db.Clubs.Add(club);
             _db.SaveChanges();
