@@ -2,9 +2,14 @@
 
 @{var imagePath = @Model.Image; }
 
-<tr>
-    <td class="Image" id="Image"> <img style="height:150px" src="/@Url.Content(@imagePath)"> </td>
-    <td class="Name" id="Name"> @Model.Name</td>
-    <td class="Category" id="Category"> @Model.Category</td>
-    <td class="Contact" id="Contact"> @Model.Contact</td>
-</tr>            
+<div class="card w-50">
+        <div class="card-body">
+            <a class="pull-left" href="#">
+                <img align="left" hspace="20" style="height:150px" src="/@Url.Content(@imagePath)"> 
+            </a>
+            <h5 class="card-title">@Model.Name</h5>
+            <p class="card-text">@Model.Category</p>
+            <i class="card-text">@Model.Description</i>
+            <p class="card-text">@Model.Contact</p>
+        </div>
+    </div>

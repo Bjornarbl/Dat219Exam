@@ -1,0 +1,8 @@
+@model IEnumerable<hva_som_skjer.Models.ClubModel>
+
+@{
+    ViewData["Title"] = "Details";
+}
+    @foreach (var p in Model) {
+    Html.RenderPartial("_ClubPartial", p);
+    }    

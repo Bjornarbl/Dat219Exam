@@ -10,11 +10,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace hva_som_skjer.Controllers
 {
-    public class ClubController : Controller
+    public class ListController : Controller
     {
         private ApplicationDbContext _db;
 
-        public ClubController(ApplicationDbContext db)
+        public ListController(ApplicationDbContext db)
         {
             _db = db;
         }

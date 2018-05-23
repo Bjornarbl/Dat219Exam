@@ -13,7 +13,7 @@ namespace hva_som_skjer.Data
                 context.Clubs.AddRange(new List<ClubModel>{
                 new ClubModel("Tufte IL", 
                 "Sport", 
-                "Fotball", 
+                "Er et idrettslag for store og små. Vi driver blant annet fotball og håndball", 
                 "Per", 
                 "Grimstad", 
                 "www.test.no", 
@@ -33,7 +33,7 @@ namespace hva_som_skjer.Data
                 "images/ovd.png"),
                 new ClubModel("Rø", 
                 "Sport", 
-                "Håndball", 
+                "Er et idrettslag for store og små. Vi driver blant annet fotball og håndball", 
                 "Espen", 
                 "Kråka, Blubox kjelleren, Jon Lilletunsvei 9, 4877 Grimstad", 
                 "www.ro.no", 
