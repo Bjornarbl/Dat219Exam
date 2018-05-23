@@ -7,7 +7,7 @@
                 <h2 class="text-center">Opprette klubb</h2>
                 <p class="text-center">Hvilken kategori passer klubben din best under </p>
             </div>
-            <form class="form-horizontal" method="post" enctype="ultipart/form-data" asp-controller="UploadFiles" asp-action="Index">
+            <form class="form-horizontal" method="post" enctype="ultipart/form-data" asp-controller="Club" asp-action="Generate">
                 <fieldset>        
                     <legend>Oppret klubb</legend>                    
                     <div class="form-group">
@@ -87,20 +87,6 @@
                     <div class="col-md-4">
                     <input id="Founded" name="Founded" type="text" placeholder="" class="form-control input-md">
                         
-                    </div>
-                    </div>
-
-                    <div class="form-group">
-                    <label class="col-md-4 control-label" for="Image">Logo bilde</label>
-                    <div class="col-md-4">
-                        <input id="Image" name="Image" class="input-file" type="file">
-                    </div>
-                    </div>
-
-                    <div class="form-group">
-                    <label class="col-md-4 control-label" for="BannerImage">Banner bilde</label>
-                    <div class="col-md-4">
-                        <input id="BannerImage" name="BannerImage" class="input-file" type="file">
                     </div>
                     </div>
 

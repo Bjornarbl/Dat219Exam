@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using hva_som_skjer.Models;
 using hva_som_skjer.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace hva_som_skjer.Controllers
 {
@@ -43,6 +44,17 @@ namespace hva_som_skjer.Controllers
         public async Task<IActionResult> CreateClub()
         {
             return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Generate(ClubModel club)
+        { 
+            //club.BannerImage = 
+
+            _db.Clubs.Add(club);
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Clubs() {
