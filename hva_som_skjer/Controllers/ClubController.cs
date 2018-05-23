@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using hva_som_skjer.Models;
 using hva_som_skjer.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace hva_som_skjer.Controllers
 {
@@ -48,15 +50,33 @@ namespace hva_som_skjer.Controllers
             }
 
             var clubs = _db.Clubs.Where(s => s.Category.Contains(category));
-
-            if (clubs == null)
+              if (clubs == null)
             {
                 return NotFound();
             }
 
             return View(clubs.ToList());
         }
-        
+
+        public async Task<IActionResult> CreateClub()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult Generate(ClubModel club)
+        {
+            var localPath = Directory.GetCurrentDirectory();
+
+            club.Image = "images/tempLogo.png";
+            club.BannerImage = "images/tempLogo.png";
+
+            _db.Clubs.Add(club);
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
