@@ -4,9 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
 using hva_som_skjer.Models;
 using hva_som_skjer.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace hva_som_skjer.Controllers
 {
@@ -40,13 +41,18 @@ namespace hva_som_skjer.Controllers
             return View(club);
         }
 
+
+        [HttpGet]
         public async Task<IActionResult> Clubs() {
             return View(await _db.Clubs.ToListAsync());
         }
+
 
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
     }
 }
