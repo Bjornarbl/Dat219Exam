@@ -1,0 +1,157 @@
+@model hva_som_skjer.Models.ClubModel
+
+<div class="team-grid">
+    <div class="container">
+        <div class="intro">
+            <h2 class="text-center">Redigere Klub</h2>
+            
+            
+            
+        </div>
+        <form class="form-horizontal" method="post" enctype="ultipart/form-data" asp-controller="Club" asp-action="Edit">
+            <fieldset>    
+                <input id="Id" name="Id" type="hidden" value="@Html.DisplayFor(model => model.Id)">                     
+                <div class="form-group">
+                <label class="col-md-4 control-label" for="Name">Navn</label>  
+                <div class="col-md-4">
+                <input id="Name" name="Name" type="text" placeholder="@Html.DisplayFor(model => model.Name)" class="form-control input-md" required="" value="@Html.DisplayFor(model => model.Name)">
+                </div>
+                </div>
+
+                
+                
+                <div class="form-group">
+                <label class="col-md-4 control-label" for="Category">Kategori</label>
+                <div class="col-md-5">
+                    <select id="Category" name="Category" class="form-control" value="@Html.DisplayFor(model => model.Category)">
+                    <option value="Empty"></option>
+                    <option value="Sport">Sport</option>
+                    <option value="Musikk">Musikk</option>
+                    <option value="Teknologi">Teknologi</option>
+                    <option value="Kunst">Kunst</option>
+                    <option value="Student Forening">Student Forening</option>
+                    <option value="Gaming">Gaming</option>
+                    <option value="Biler">Biler</option>
+                    <option value="Friluft">Friluft</option>
+                    </select>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="col-md-4 control-label" for="Description">Beskrivelse</label>
+                <div class="col-md-4">                     
+                    <textarea class="form-control" id="Description" name="Description">@Html.DisplayFor(model => model.Description)</textarea>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="col-md-4 control-label" for="Contact">Kontaktperson</label>  
+                <div class="col-md-4">
+                <input id="Contact" name="Contact" type="text" placeholder="" class="form-control input-md"  value="@Html.DisplayFor(model => model.Contact)">
+                <span class="help-block">Hovedansvarlig for klubben</span>  
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="col-md-4 control-label" for="Adress">Adresse</label>  
+                <div class="col-md-4">
+                <input id="Adress" name="Adress" type="text" placeholder="" class="form-control input-md" value="@Html.DisplayFor(model => model.Adress)">
+                    
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="col-md-4 control-label" for="Website">Nettsted</label>  
+                <div class="col-md-4">
+                <input id="Website" name="Website" type="text" placeholder="" class="form-control input-md">
+                
+                    
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="col-md-4 control-label" for="Email">E-post</label>  
+                <div class="col-md-4">
+                <input id="Email" name="Email" type="text" placeholder="" class="form-control input-md" >
+                    
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="col-md-4 control-label" for="Phone">Telefon</label>  
+                <div class="col-md-4">
+                <input id="Phone" name="Phone" type="text" placeholder="" class="form-control input-md" value="@Html.DisplayFor(model => model.Phone)">
+                    
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="col-md-4 control-label" for="Founded">Stiftet</label>  
+                <div class="col-md-4">
+                <input id="Founded" name="Founded" type="text" placeholder="" class="form-control input-md" value="@Html.DisplayFor(model => model.Founded)">
+                    
+                </div>
+                </div>
+                
+
+                <div class="form-group">
+                <div class="col-md-4">
+                    <button id="singlebutton" name="singlebutton" class="btn btn-inverce">Submit</button>
+                </div>
+                </div>
+
+                </fieldset>
+                
+            </form>
+            <br/>
+            <form method="post" enctype="multipart/form-data" asp-controller="Club" asp-action="UploadLogo">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <p>Velg Logo bilde:</p>
+                        <input type="file" name="files" />
+                        <input id="Id" name="Id" type="hidden" value="@Html.DisplayFor(model => model.Id)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <input type="submit" value="Upload" />
+                    </div>
+                </div>
+            </form>
+            <form method="post" enctype="multipart/form-data" asp-controller="Club" asp-action="UploadBanner">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <p>Velg Banner bilde:</p>
+                        <input type="file" name="files" />
+                        <input id="Id" name="Id" type="hidden" value="@Html.DisplayFor(model => model.Id)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <input type="submit" value="Upload" />
+                    </div>
+                </div>
+            </form>
+
+            <form class="form-horizontal" method="post" enctype="ultipart/form-data" asp-controller="Club" asp-action="AddAdmin">
+            <fieldset>                         
+                <div class="form-group">
+                <label class="col-md-4 control-label" for="Name">Legg til en Administrator</label>
+                    
+                <div class="col-md-4">
+                <input id="Name" name="Name" type="text" class="form-control input-md" required="">
+                <span class="help-block">Skriv e-mail adressen vedkommen bruker til denne netsiden</span> 
+                    
+                </div>
+                </div>
+                <div class="form-group">
+                <div class="col-md-4">
+                    <button id="singlebutton" name="singlebutton" class="btn btn-inverce">Submit</button>
+                </div>
+                </div>
+
+            </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

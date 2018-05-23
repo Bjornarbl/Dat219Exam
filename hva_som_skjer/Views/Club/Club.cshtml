@@ -58,5 +58,13 @@
         <dd>
             @Html.DisplayFor(model => model.Founded)
         </dd>
+        
+       <div class="team-grid">
+            <div class="container">
+                <div class="intro">
+                    <a asp-action="EditClub" asp-route-id="@Model.Id">rediger klubb </a>
+                </div>
+            </div>
+        </div>
     </dl>
 </div>
