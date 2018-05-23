@@ -53,8 +53,8 @@ namespace hva_som_skjer.Controllers
         { 
             var localPath = Directory.GetCurrentDirectory();
 
-            club.Image = "images/tufte.gif";
-            club.BannerImage = "images/tufte.gif";
+            club.Image = "images/tempLogo.png";
+            club.BannerImage = "images/tempLogo.png";
 
             _db.Clubs.Add(club);
             _db.SaveChanges();
