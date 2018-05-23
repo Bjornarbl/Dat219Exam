@@ -37,3 +37,20 @@ body {
         display: none;
     }
 }
+
+.card {
+    overflow: hidden;
+}
+
+.card-img-left {
+    position: absolute;
+    height: auto;
+    max-height: 100%;
+    width: auto;
+    max-width: 20%;
+    padding: 10px;
+  }
+
+  .card-img-left ~ .card-body {
+    margin-left: 20%;
+}

@@ -1,10 +1,8 @@
 @model IEnumerable<hva_som_skjer.Models.ClubModel>
 
-@{
-    ViewData["Title"] = "Klubber";
-}
+    @{ ViewData["Title"] = "Klubber"; }
 
-<body>
+
     <div class="team-grid">
         <div class="container">
             <div class="intro">
@@ -13,34 +11,40 @@
             </div>
             <div class="row people">
                 <div class="col-md-4 col-lg-3 item">
-                    <form a asp-controller="ClubController" asp-action="Clubs">
-                        <div class="box" onclick="myFunction()" id="sport"  style="background-image:url(&quot;images/action-athlete-athletics-618612.jpg&quot;);">
+                    <a style="display:block" asp-controller="Club" asp-action="Clubs" asp-route-category="Sport">
+                        <div class="box"  style="background-image:url(&quot;images/action-athlete-athletics-618612.jpg&quot;);">
                             <div class="cover">
                                 <h3 class="name">Sport</h3>
                             </div>
                         </div>
-                    </form>
+                    </a>
                 </div>
                 <div class="col-md-4 col-lg-3 item">
-                    <div class="box" style="background-image:url(&quot;images/album-black-classic-167092.jpg&quot;);">
-                        <div class="cover">
-                            <h3 class="name">Musikk</h3>
+                    <a style="display:block" asp-controller="Club" asp-action="Clubs" asp-route-category="Musikk">
+                        <div class="box" style="background-image:url(&quot;images/album-black-classic-167092.jpg&quot;);">
+                            <div class="cover">
+                                <h3 class="name">Musikk</h3>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-md-4 col-lg-3 item">
-                    <div class="box" style="background-image:url(&quot;images/abstract-art-blur-373543.jpg&quot;);">
-                        <div class="cover">
-                            <h3 class="name">Teknologi</h3>
+                    <a style="display:block" asp-controller="Club" asp-action="Clubs" asp-route-category="Teknologi">
+                        <div class="box" style="background-image:url(&quot;images/abstract-art-blur-373543.jpg&quot;);">
+                            <div class="cover">
+                                <h3 class="name">Teknologi</h3>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-md-4 col-lg-3 item">
-                    <div class="box" style="background-image:url(&quot;images/art-artist-brush-102127.jpg&quot;);">
-                        <div class="cover">
-                            <h3 class="name">Kunst</h3>
+                    <a style="display:block" asp-controller="Club" asp-action="Clubs" asp-route-category="Kunst">
+                        <div class="box" style="background-image:url(&quot;images/art-artist-brush-102127.jpg&quot;);">
+                            <div class="cover">
+                                <h3 class="name">Kunst</h3>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -50,41 +54,41 @@
             <div class="intro"></div>
             <div class="row people">
                 <div class="col-md-4 col-lg-3 item">
-                    <div class="box" style="background-image:url(&quot;images/adult-aged-baby-226616.jpg&quot;);">
-                        <div class="cover">
-                            <h3 class="name" style="font-size:20;">Utdanning</h3>
+                    <a style="display:block" asp-controller="Club" asp-action="Clubs" asp-route-category="Utdanning">
+                        <div class="box" style="background-image:url(&quot;images/adult-aged-baby-226616.jpg&quot;);">
+                            <div class="cover">
+                                <h3 class="name" style="font-size:20;">Utdanning</h3>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-md-4 col-lg-3 item">
-                    <div class="box" style="background-image:url(&quot;images/blue-controller-dualshock-18174.jpg&quot;);">
-                        <div class="cover">
-                            <h3 class="name">Gaming</h3>
+                    <a style="display:block" asp-controller="Club" asp-action="Clubs" asp-route-category="Gaming">
+                        <div class="box" style="background-image:url(&quot;images/blue-controller-dualshock-18174.jpg&quot;);">
+                            <div class="cover">
+                                <h3 class="name">Gaming</h3>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-md-4 col-lg-3 item">
-                    <div class="box" style="background-image:url(&quot;images/automobile-automotive-car-358070.jpg&quot;);">
-                        <div class="cover">
-                            <h3 class="name">Biler</h3>
+                    <a style="display:block" asp-controller="Club" asp-action="Clubs" asp-route-category="Biler">
+                        <div class="box" style="background-image:url(&quot;images/automobile-automotive-car-358070.jpg&quot;);">
+                            <div class="cover">
+                                <h3 class="name">Biler</h3>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-md-4 col-lg-3 item">
-                    <div class="box" style="background-image:url(&quot;images/backlit-beach-dawn-588561.jpg&quot;);">
-                        <div class="cover">
-                            <h3 class="name">Friluft</h3>
+                    <a style="display:block" asp-controller="Club" asp-action="Clubs" asp-route-category="Friluft">
+                        <div class="box" style="background-image:url(&quot;images/backlit-beach-dawn-588561.jpg&quot;);">
+                            <div class="cover">
+                                <h3 class="name">Friluft</h3>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-
-<script>
-function myFunction() {
-  window.location.href="@Url.Action("Clubs")";;
-}
-</script>
-
-</body>

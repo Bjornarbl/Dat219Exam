@@ -8,7 +8,7 @@ namespace hva_som_skjer.Models
     {
 
         public ClubModel() {}
-        public ClubModel(string name, string category, string description, string contact, string adress, string website, string email, int phone, int founded, string image) 
+        public ClubModel(string name, string category, string description, string contact, string adress, string website, string email, string phone, int founded, string image) 
         { 
             this.Name = name;
             this.Category = category;
@@ -55,7 +55,7 @@ namespace hva_som_skjer.Models
 
         [DataType(DataType.PhoneNumber)]
         [Display(Name="Telefon")]
-        public int Phone { get; set; }
+        public string Phone { get; set; }
 
         [Display(Name="Stiftet")]
         public int Founded { get; set; }

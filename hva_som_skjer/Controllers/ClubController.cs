@@ -40,10 +40,23 @@ namespace hva_som_skjer.Controllers
             return View(club);
         }
 
-        public async Task<IActionResult> Clubs() {
-            return View(await _db.Clubs.ToListAsync());
-        }
+        public async Task<IActionResult> Clubs(string category) 
+        {
+            if (category == null)
+            {
+                return NotFound();
+            }
 
+            var clubs = _db.Clubs.Where(s => s.Category.Contains(category));
+
+            if (clubs == null)
+            {
+                return NotFound();
+            }
+
+            return View(clubs.ToList());
+        }
+        
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

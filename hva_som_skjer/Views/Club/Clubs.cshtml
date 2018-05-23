@@ -1,12 +1,11 @@
 @model IEnumerable<hva_som_skjer.Models.ClubModel>
 
 @{
-    ViewData["Title"] = "Details";
+    var m = Model.ToList();
+    ViewData["Title"] = m[0].Category;
 }
 
-<table class="table">
-    <tr><th>Name</th><th>Category</th><td>Contact</td></tr>
-        @foreach (var p in Model) {
-        Html.RenderPartial("_ClubPartial", p);
-        }    
-</table> 
+@foreach (var p in Model) 
+{
+    Html.RenderPartial("_ClubPartial", p);
+}    
