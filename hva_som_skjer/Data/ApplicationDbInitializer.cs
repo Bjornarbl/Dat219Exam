@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using hva_som_skjer.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace hva_som_skjer.Data
 {
     public static class ApplicationDbInitializer
     {
-        public static void Initialize(ApplicationDbContext context)
+        public static void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> um)
         {
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
@@ -44,7 +45,13 @@ namespace hva_som_skjer.Data
                 ),
             });
 
+        
+
+            var user = new ApplicationUser{UserName="email@email.com", Email = "email@email.com"};
+            um.CreateAsync(user, "Password1.").Wait();
             context.SaveChanges();
+
+
         }
     }
 }

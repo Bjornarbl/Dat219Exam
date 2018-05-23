@@ -13,6 +13,11 @@ using Microsoft.Extensions.Options;
 using hva_som_skjer.Models;
 using hva_som_skjer.Models.ManageViewModels;
 using hva_som_skjer.Services;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using static System.Net.Mime.MediaTypeNames;
+using System.Reflection;
+
 
 namespace hva_som_skjer.Controllers
 {
@@ -440,6 +445,32 @@ namespace hva_som_skjer.Controllers
             _logger.LogInformation("User with id '{UserId}' has reset their authentication app key.", user.Id);
 
             return RedirectToAction(nameof(EnableAuthenticator));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Upload(List<IFormFile> files)
+        {
+            string filename = string.Format(@"{0}.png", Guid.NewGuid());
+            var localPath = Directory.GetCurrentDirectory();
+            string filePath = "\\data\\ProfilePictures\\"+filename;
+            string wholePath = localPath+filePath;
+            
+            if (files[0].Length > 0)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var oldPicture = user.ProfilePicture;
+                user.ProfilePicture = filename;
+                await _userManager.UpdateAsync(user);
+
+
+                using (var stream = new FileStream(wholePath, FileMode.Create))
+                {
+                    await files[0].CopyToAsync(stream);
+                }
+                //TODO: delete old profile picture. Problem is Access to pat * is denied
+            }    
+            
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]

@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using hva_som_skjer.Models;
 using hva_som_skjer.Models.AccountViewModels;
 using hva_som_skjer.Services;
+using System.IO;
 
 namespace hva_som_skjer.Controllers
 {
@@ -221,6 +222,9 @@ namespace hva_som_skjer.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+
+                
+                
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
