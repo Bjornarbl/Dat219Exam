@@ -1,13 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace hva_som_skjer.Models
-{
+{   
     public class ClubModel
     {
-        public ClubModel(){}
+        public ClubModel()
+        {
+            Admins = new List<Admin>();
+            News = new Collection<NewsModel>();
+        }
+
+        //denne brukes til json filen til å populere siden
         public ClubModel(string name,   string category, string description, string contact,
                          string adress, string website,  string email,       string phone, int founded, string image) 
         { 
@@ -21,12 +28,11 @@ namespace hva_som_skjer.Models
             this.Phone = phone;
             this.Founded = founded;
             this.Image = image;
-            Admins = new List<ApplicationUser>();
 
-        }      
+        }
 
         //TODO: List for admin users, news, comments and events.
-        
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -61,22 +67,38 @@ namespace hva_som_skjer.Models
         public string Phone { get; set; }
 
         [Display(Name="Stiftet")]
-        public int Founded { get; set; }
+        public int? Founded { get; set; }
 
         public string Image {get; set; }
 
         public string BannerImage {get; set; }
 
-        public List<ApplicationUser> Admins{ get; set; }
-        public List<NewsModel> NewsList { get; set; }
-        public List<CommentModel> Comments { get; set; }
+        public ICollection<Admin> Admins{get; set;}
 
-        public void InitializeLists(ApplicationUser user)
-        {
-            this.Admins = new List<ApplicationUser>();
-            this.Admins.Add(user);
-            this.NewsList = new List<NewsModel>();
-        }
+        public ICollection<NewsModel> News{get; set;}
 
-    }   
+    }
+
+    public class Admin
+    {
+        public Admin(){}
+
+        [Key]
+        public int ClubAdminId{get; set;}
+
+        public ApplicationUser admin{get; set;}
+
+
+    }
+
+    public class NewsPost
+    {
+
+        [Key]
+        public int ClubAdminId{get; set;}
+
+        public ApplicationUser admin{get; set;}
+
+        public ClubModel ClubModel{get; set;}        
+    }
 }

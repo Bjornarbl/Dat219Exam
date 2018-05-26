@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace hva_som_skjer.Models
@@ -10,16 +11,13 @@ namespace hva_som_skjer.Models
             Posted = DateTime.UtcNow;
         }
 
-        public NewsModel(string title, string content, string club)
+        public NewsModel(string title, string content)
         {
             Content = content;
             Posted = DateTime.UtcNow;
-            Club = club;
         }
 
         public int Id { get; set; }
-
-        public string Club { get; set; }
 
         [Display(Name="Tittel")]
         public string Title { get; set; }
@@ -30,5 +28,7 @@ namespace hva_som_skjer.Models
         [Display(Name="Publisert")]
         [DataType(DataType.Date)]
         public DateTime Posted { get; set; }
+
+        public List<CommentModel> Comments { get; set; }
     }
 }

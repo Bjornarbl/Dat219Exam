@@ -3,77 +3,59 @@
 @{
     ViewData["Title"] = @Html.DisplayFor(model => model.Name);
 }
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-
-
-<div class="card mb-3">
-  <img class="card-img-top" src="@Model.BannerImage" alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">@Html.DisplayFor(model => model.Name)</h5>
-    <p class="card-text">@Html.DisplayFor(model => model.Description)</p>
-    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-  </div>
+<div id="mySidenav" class="sidenav">
+    <img class="card-img-top" src="@Model.Image" alt="Card image cap">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="#">Om Klubben</a>
+    <a href="#">Kontakt</a>
+    <a asp-action="EditClub" asp-route-id="@Model.Id">Rediger klubb </a>
 </div>
 
-<div>
-    <h4>@Html.DisplayFor(model => model.Category)</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Category)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd>
-            
-        </dd>        
-        <dt>
-            @Html.DisplayNameFor(model => model.Contact)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Contact)
-        </dd>        
-        <dt>
-            @Html.DisplayNameFor(model => model.Adress)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Adress)
-        </dd>        
-        <dt>
-            @Html.DisplayNameFor(model => model.Website)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Website)
-        </dd>        
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Founded)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Founded)
-        </dd>
-        
-       <div class="team-grid">
-            <div class="container">
-                <div class="intro">
-                    <a asp-action="EditClub" asp-route-id="@Model.Id">rediger klubb </a>
-                </div>
-            </div>
+<div id="main">
+    <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Meny</span>
+    <div class="card mb-3">
+    <img class="card-img-top" src="@Model.BannerImage" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">@Html.DisplayFor(model => model.Name)</h5>
+            <p class="card-text">@Html.DisplayFor(model => model.Description)</p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
         </div>
-    </dl>
+    </div>
 </div>
+
+<div id="createNews">
+    <form class="form-horizontal" method="post" asp-controller="Club" asp-action="addNews">
+        <div class="form-group">
+            <div class="col-md-4">
+                <input id="Id" name="Id" type="hidden" value="@Html.DisplayFor(model => model.Id)">
+                <button id="singlebutton" name="singlebutton" class="btn btn-inverce" >Upload News</button>
+            </div>
+        </div>   
+    </form>
+</div>
+
+
+
+
+@foreach (var p in Model.News) 
+{
+    Html.RenderPartial("_ClubNewsPartial", p);
+}    
+
+      
+
+
+
+<script>
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
+}
+</script>
