@@ -98,7 +98,7 @@ namespace hva_som_skjer.Controllers
             {
                 
                 var oldPicture = club.Image;
-                club.Image = filename;
+                club.Image = wholePath;
                 _db.Clubs.Update(club);
                 _db.SaveChanges();
 
@@ -115,26 +115,29 @@ namespace hva_som_skjer.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadBanner(List<IFormFile> files, int Id)
         {
-            string filename = string.Format(@"{0}.png", Guid.NewGuid());
-            var localPath = Directory.GetCurrentDirectory();
-            string filePath = "\\data\\BannerPictures\\"+filename;
-            string wholePath = localPath+filePath;
-
-            var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == Id);
+            
             
             if (files[0].Length > 0)
             {
-                
+                string filename = string.Format(@"{0}.png", Guid.NewGuid());
+                var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == Id);                
                 var oldPicture = club.BannerImage;
-                club.BannerImage = filename;
+                club.BannerImage = "../../../Data/BannerPictures/"+filename;
                 _db.Clubs.Update(club);
                 _db.SaveChanges();
 
+
+            var localPath = Directory.GetCurrentDirectory();
+            string filePath = "\\data\\BannerPictures\\"+filename;
+            string wholePath = localPath+filePath;
                 using (var stream = new FileStream(wholePath, FileMode.Create))
                 {
                     await files[0].CopyToAsync(stream);
                 }
                 //TODO: delete old profile picture. Problem is Access to path * is denied
+            }else
+            {
+                return RedirectToAction(nameof(Index));
             }    
             
             return RedirectToAction(nameof(Index));
@@ -165,12 +168,14 @@ namespace hva_som_skjer.Controllers
         {
             var localPath = Directory.GetCurrentDirectory();
 
-            club.Image = "images/tempLogo.png";
-            club.BannerImage = "images/tempLogo.png";
-            //var user = await _um.GetUserAsync(User);
-            //var ad = new Models.Admin(0,user.Email);
-            //club.AdminString.Add(ad);
+            club.Image = "../../images/LogoPictures/tempLogo.png";
+            club.BannerImage = "../../images/BannerPictures/defaultBanner.png";
 
+            var user = await _um.GetUserAsync(User);
+            club.InitializeLists(user);
+
+            
+             
             _db.Clubs.Add(club);
             _db.SaveChanges();
             return RedirectToAction(nameof(Index));

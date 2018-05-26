@@ -7,9 +7,9 @@ namespace hva_som_skjer.Models
 {
     public class ClubModel
     {
-
-        public ClubModel() {}
-        public ClubModel(string name, string category, string description, string contact, string adress, string website, string email, string phone, int founded, string image) 
+        public ClubModel(){}
+        public ClubModel(string name,   string category, string description, string contact,
+                         string adress, string website,  string email,       string phone, int founded, string image) 
         { 
             this.Name = name;
             this.Category = category;
@@ -21,6 +21,8 @@ namespace hva_som_skjer.Models
             this.Phone = phone;
             this.Founded = founded;
             this.Image = image;
+            Admins = new List<ApplicationUser>();
+
         }      
 
         //TODO: List for admin users, news, comments and events.
@@ -65,29 +67,16 @@ namespace hva_som_skjer.Models
 
         public string BannerImage {get; set; }
 
-        public List<Admin> AdminString { get; set; }
-
-        public List<ApplicationUser> Admins { get; set; }
-
+        public List<ApplicationUser> Admins{ get; set; }
         public List<NewsModel> NewsList { get; set; }
         public List<CommentModel> Comments { get; set; }
 
-        
-        
-    }
-    public class Admin
-    {
-        public Admin(){}
-        public Admin(int id ,string admin)
+        public void InitializeLists(ApplicationUser user)
         {
-            this.Id = id;
-            this.AdminString = admin;
+            this.Admins = new List<ApplicationUser>();
+            this.Admins.Add(user);
+            this.NewsList = new List<NewsModel>();
         }
 
-        public int Id{get; set;}
-        public string AdminString{get; set;}
-
-     
-    }
-     
+    }   
 }
