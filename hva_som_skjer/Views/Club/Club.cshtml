@@ -4,13 +4,13 @@
     ViewData["Title"] = @Html.DisplayFor(model => model.Name);
 }
 
-<h2>@Html.DisplayFor(model => model.Name)</h2>
+
 
 <div class="card mb-3">
   <img class="card-img-top" src="@Model.BannerImage" alt="Card image cap">
   <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+    <h5 class="card-title">@Html.DisplayFor(model => model.Name)</h5>
+    <p class="card-text">@Html.DisplayFor(model => model.Description)</p>
     <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
   </div>
 </div>
@@ -29,7 +29,7 @@
             @Html.DisplayNameFor(model => model.Description)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            
         </dd>        
         <dt>
             @Html.DisplayNameFor(model => model.Contact)

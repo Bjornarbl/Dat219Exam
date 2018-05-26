@@ -89,7 +89,7 @@ namespace hva_som_skjer.Controllers
         {
             string filename = string.Format(@"{0}.png", Guid.NewGuid());
             var localPath = Directory.GetCurrentDirectory();
-            string filePath = "\\data\\LogoPictures\\"+filename;
+            string filePath = "\\wwwroot\\images\\LogoPictures\\"+filename;
             string wholePath = localPath+filePath;
 
             var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == Id);
@@ -98,7 +98,7 @@ namespace hva_som_skjer.Controllers
             {
                 
                 var oldPicture = club.Image;
-                club.Image = wholePath;
+                club.Image = "../../images/LogoPictures/"+filename;
                 _db.Clubs.Update(club);
                 _db.SaveChanges();
 
@@ -122,13 +122,13 @@ namespace hva_som_skjer.Controllers
                 string filename = string.Format(@"{0}.png", Guid.NewGuid());
                 var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == Id);                
                 var oldPicture = club.BannerImage;
-                club.BannerImage = "../../../Data/BannerPictures/"+filename;
+                club.BannerImage = "../../images/BannerPictures/"+filename;
                 _db.Clubs.Update(club);
                 _db.SaveChanges();
 
 
             var localPath = Directory.GetCurrentDirectory();
-            string filePath = "\\data\\BannerPictures\\"+filename;
+            string filePath = "\\wwwroot\\images\\BannerPictures\\"+filename;
             string wholePath = localPath+filePath;
                 using (var stream = new FileStream(wholePath, FileMode.Create))
                 {
