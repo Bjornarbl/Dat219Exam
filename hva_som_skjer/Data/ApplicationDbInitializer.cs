@@ -71,12 +71,7 @@ namespace hva_som_skjer.Data
 
             context.Clubs.AddRange(json_clubs); 
 
-        
-
-            
             context.SaveChanges();
-
-
         }
     }
 }

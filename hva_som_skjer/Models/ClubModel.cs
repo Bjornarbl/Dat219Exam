@@ -79,6 +79,7 @@ namespace hva_som_skjer.Models
         public ICollection<Admin> Admins {get; set;}
     
         public List<NewsModel> News{get; set;}
+        public ICollection<Event> Events { get; set; }
         
     }
 

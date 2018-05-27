@@ -1,0 +1,64 @@
+@model hva_som_skjer.Models.Event
+
+@{
+    ViewData["Title"] = @Html.DisplayFor(model => model.Title);
+}
+
+<hr />
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card" style="width: 18rem;">
+            <div class="card-header">
+                Arrangementer
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a asp-action="Index">Tilbake til Arrangementer</a></li>
+                <li class="list-group-item"><a asp-action="Index">Se flere arrangementer fra denne arrangøren</a></li>
+                <li class="list-group-item"><a asp-action="Index">Gå til Klubben</a></li>
+            </ul>
+        </div>
+
+        <br>
+
+        <div class="card" style="width: 18rem;">
+            <div class="card-header">
+                Administrer
+            </div>
+            <ul class="list-group list-group-flush">
+
+                <li class="list-group-item"><a asp-action="Edit" asp-route-id="@Model.Id">Rediger</a></li>
+                <li class="list-group-item"><a asp-action="Delete" asp-route-id="@Model.Id">Slett </a></li>
+                <li class="list-group-item">Denne skal kunne være synlig for klubb Administorer</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col event-card">
+        <div class="card">
+            <img class="card-img-top" src="~/images/EventDefault.png" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">@Html.DisplayFor(model => model.Title)</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Arrangør: Beta</h6>
+                <hr />
+                <p class="card-text"><i class="fa fa-calendar" aria-hidden="true"></i> @Model.StartDate.ToLongDateString() klokken  @Html.DisplayFor(model => model.StartTime)</p>
+                <p class="card-text"><i class="fa fa-map-marker" aria-hidden="true"></i> @Html.DisplayFor(model => model.Location)</a>
+                <hr />
+                <p class="card-text"><small class="text-muted">Opprettet @Html.DisplayFor(model => model.Created)</small></p>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="card event-card">
+            <div class="card-header">
+                Detaljer
+            </div>
+            <div class="card-body">
+                <p class="card-text">@Html.DisplayFor(model => model.Content)</p>
+            </div>
+        </div>
+    </div>   
+
+    <div class="col-md-3"></div> 
+ </div>
