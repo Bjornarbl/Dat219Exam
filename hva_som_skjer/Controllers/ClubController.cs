@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace hva_som_skjer.Controllers
 {
@@ -91,11 +92,13 @@ namespace hva_som_skjer.Controllers
             return View(clubs.ToList());
         }
 
+        [Authorize]
         public async Task<IActionResult> CreateClub()
         {
             return View();
         }
 
+        [Authorize]
         public async Task<IActionResult> EditClub(int? id)
         {
             if (id == null)
@@ -112,6 +115,7 @@ namespace hva_som_skjer.Controllers
 
             return View(club);
         }
+        [Authorize]
         public async Task<IActionResult> AddNews(int? id)
         {
             if (id == null)
@@ -234,6 +238,7 @@ namespace hva_som_skjer.Controllers
             return RedirectToAction("Club",new{ID = club.Id});
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddComment(CommentModel comment, string returnURL)
         {

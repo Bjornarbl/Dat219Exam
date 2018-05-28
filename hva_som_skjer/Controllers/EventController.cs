@@ -9,6 +9,7 @@ using hva_som_skjer.Data;
 using hva_som_skjer.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace hva_som_skjer.Controllers
 {
@@ -62,6 +63,7 @@ namespace hva_som_skjer.Controllers
         }
 
         // GET: Event/Create/1
+        [Authorize]
         public IActionResult Create(int? id)
         {
             if (id == null)
@@ -124,6 +126,7 @@ namespace hva_som_skjer.Controllers
         }
 
         // GET: Event/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -196,6 +199,7 @@ namespace hva_som_skjer.Controllers
         }
 
         // GET: Event/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
