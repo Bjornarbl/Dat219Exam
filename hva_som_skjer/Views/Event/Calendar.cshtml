@@ -1,0 +1,41 @@
+@model IEnumerable<hva_som_skjer.Models.Event>
+
+@{
+    ViewData["Title"] = "Kalender";
+}
+
+<hr />
+
+<div class="social container">
+    <div style="margin:46px;">
+
+@foreach (var item in Model)
+{
+        <div class="row row-striped">
+            <div class="col-2 text-center ">
+                <h1 class="display-4 ">
+                    <span class="badge date-green">@Html.DisplayFor(modelItem => item.StartDate.Day)</span>
+                </h1>
+                <h2>@item.StartDate.ToString("MMM")</h2>
+            </div>
+            <div class="col-10">
+                <h3 class="text-uppercase">                    
+                    <a asp-action="Details" asp-route-id="@item.Id">
+                        <strong>@Html.DisplayFor(modelItem => item.Title)</strong>
+                    </a>
+                </h3>
+                <ul class="list-inline">
+                    <li class="list-inline-item">
+                        <i class="fa fa-calendar-o" aria-hidden="true"></i> @Html.DisplayFor(modelItem => item.StartDate.Day)</li>
+                    <li class="list-inline-item">
+                        <i class="fa fa-clock-o" aria-hidden="true"></i> @item.StartTime.ToString("HH:mm") - 22:00 PM</li>
+                    <li class="list-inline-item">
+                        <i class="fa fa-location-arrow" aria-hidden="true"></i> @Html.DisplayFor(modelItem => item.Location)</li>
+                </ul>
+                <p>@Html.DisplayFor(modelItem => item.Content)</p>
+            </div>
+        </div>
+}
+
+    </div>
+</div>

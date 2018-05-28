@@ -17,12 +17,12 @@
                 <a asp-action="Details" asp-route-id="@item.Id">
                     <h5 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h5>
                 </a>
-                <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(modelItem => item.StartDate) - @Html.DisplayFor(modelItem => item.StartTime)</h6>
+                <h6 class="card-subtitle mb-2 text-muted">@item.StartDate.ToLongDateString() - @item.StartTime.ToString("HH:mm")</h6>
                 <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(modelItem => item.Location)</h6>
                 <p class="card-text">@Html.DisplayFor(modelItem => item.Content)</p>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.Id">Vis</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id">Rediger</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Slett</a>
             </div>
         </div>
     </div>

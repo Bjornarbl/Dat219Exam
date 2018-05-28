@@ -32,7 +32,8 @@ namespace hva_som_skjer.Models
         [Display(Name="Dato")]
         public DateTime StartDate { get; set; }
 
-        [DataType(DataType.Time)]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:H:mm}")]
         [Display(Name="Klokkeslett")]
         public DateTime StartTime { get; set; }
 

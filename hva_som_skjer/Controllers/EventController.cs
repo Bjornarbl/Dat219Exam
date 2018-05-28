@@ -12,17 +12,27 @@ namespace hva_som_skjer.Controllers
 {
     public class EventController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _db;
 
         public EventController(ApplicationDbContext context)
         {
-            _context = context;
+            _db = context;
         }
 
         // GET: Event
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Events.ToListAsync());
+            var events = await _db.Events.ToListAsync();
+
+            return View(events.OrderBy(x => x.StartDate));
+        }
+
+        // GET: Event
+        public async Task<IActionResult> Calendar()
+        {
+            var events = await _db.Events.ToListAsync();
+
+            return View(events.OrderBy(x => x.StartDate));
         }
 
         // GET: Event/Details/5
@@ -33,7 +43,7 @@ namespace hva_som_skjer.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events
+            var @event = await _db.Events
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (@event == null)
             {
@@ -58,8 +68,8 @@ namespace hva_som_skjer.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(@event);
-                await _context.SaveChangesAsync();
+                _db.Add(@event);
+                await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(@event);
@@ -73,7 +83,7 @@ namespace hva_som_skjer.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events.SingleOrDefaultAsync(m => m.Id == id);
+            var @event = await _db.Events.SingleOrDefaultAsync(m => m.Id == id);
             if (@event == null)
             {
                 return NotFound();
@@ -97,8 +107,8 @@ namespace hva_som_skjer.Controllers
             {
                 try
                 {
-                    _context.Update(@event);
-                    await _context.SaveChangesAsync();
+                    _db.Update(@event);
+                    await _db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,7 +134,7 @@ namespace hva_som_skjer.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events
+            var @event = await _db.Events
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (@event == null)
             {
@@ -139,15 +149,15 @@ namespace hva_som_skjer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @event = await _context.Events.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Events.Remove(@event);
-            await _context.SaveChangesAsync();
+            var @event = await _db.Events.SingleOrDefaultAsync(m => m.Id == id);
+            _db.Events.Remove(@event);
+            await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool EventExists(int id)
         {
-            return _context.Events.Any(e => e.Id == id);
+            return _db.Events.Any(e => e.Id == id);
         }
     }
 }
