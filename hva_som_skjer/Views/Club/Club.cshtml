@@ -42,7 +42,7 @@
                     <a asp-action="">Kontakt</a>
                 </li>
                 <li class="list-group-item">
-                    <a asp-action="">Arrangementer</a>
+                    <a asp-controller="Event" asp-action="Index" asp-route-key="@Model.Club.Id">Arrangementer</a>
                 </li>
           </ul>
         </div>
