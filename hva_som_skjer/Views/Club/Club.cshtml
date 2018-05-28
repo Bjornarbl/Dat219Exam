@@ -24,10 +24,14 @@
 
     @foreach(var s in Model.NewsModel)
     {
-    if(s.clubId == Model.Club.Id)
-       {
-            Html.RenderPartial("_ClubNewsPartial", s);
-       }
+      var comments = Model.CommentModel;
+      var user = Model.User;
+
+      var vm = new CommentViewModel(s,comments,user);
+      if(s.clubId == Model.Club.Id)
+        {
+          Html.RenderPartial("_ClubNewsPartial", vm);
+        }
     }
 </div>
 

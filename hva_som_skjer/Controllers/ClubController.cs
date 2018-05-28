@@ -37,16 +37,20 @@ namespace hva_som_skjer.Controllers
                 return NotFound();
             }
 
-            var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == id);
+            var clubtemp = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == id);
 
-            if (club == null)
+            if (clubtemp == null)
             {
                 return NotFound();
             }
 
             var vm = new NewsViewModel();
+
             vm.NewsModel = _db.News.OrderByDescending(NewsModel => NewsModel.Id).ToList();
-            vm.Club = club;
+            vm.CommentModel =_db.Comments.ToList();
+
+            vm.Club = clubtemp;
+            vm.User = await _um.GetUserAsync(User);
 
             return View(vm);
         }
@@ -197,6 +201,27 @@ namespace hva_som_skjer.Controllers
 
             return RedirectToAction("Club",new{ID = club.Id});
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddComment(CommentModel comment)
+        {
+            
+            var news = await _db.News.SingleOrDefaultAsync(m => m.Id == comment.NewsId);
+
+            var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == news.clubId);
+
+            var user = await _um.GetUserAsync(User);
+            comment.Author = user.UserName;
+            comment.AuthorPicture = user.ProfilePicture;
+            comment.news = news;
+        
+
+            _db.Comments.Add(comment);
+            _db.SaveChanges();
+
+            return RedirectToAction("Club",new{ID = club.Id});
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Generate(ClubModel club)

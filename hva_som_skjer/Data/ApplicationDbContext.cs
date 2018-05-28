@@ -24,7 +24,7 @@ namespace hva_som_skjer.Data
         }
 
         public DbSet<Models.ClubModel> Clubs { get; set; } 
-        public DbSet<Models.NewsModel> News { get; set; } 
+        public DbSet<Models.NewsModel> News { get; set; }
         public DbSet<Models.CommentModel> Comments { get; set; }
         public DbSet<Models.Admin> Admins { get; set; } 
 
