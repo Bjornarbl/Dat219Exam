@@ -54,7 +54,10 @@ namespace hva_som_skjer.Controllers
             }
 
             var clubs = _db.Clubs.Where(s => s.Name.ToLower().Contains(name.ToLower()) || 
-                s.Description.ToLower().Contains(name.ToLower()));
+            s.Category.ToLower().Contains(name.ToLower()) ||
+            s.Description.ToLower().Contains(name.ToLower()) 
+            
+            );
             if (!clubs.Any())
             {
                 return NotFound();

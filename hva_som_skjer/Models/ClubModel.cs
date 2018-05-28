@@ -65,6 +65,8 @@ namespace hva_som_skjer.Models
 
         public string BannerImage {get; set; }
 
+        public string OrderBy {get; set; }
+
         public List<Admin> AdminString { get; set; }
 
         public List<ApplicationUser> Admins { get; set; }
