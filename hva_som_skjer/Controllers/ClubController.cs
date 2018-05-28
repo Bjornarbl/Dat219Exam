@@ -44,7 +44,11 @@ namespace hva_som_skjer.Controllers
                 return NotFound();
             }
 
-            return View(club);
+            var vm = new NewsViewModel();
+            vm.NewsModel = _db.News.OrderByDescending(NewsModel => NewsModel.Id).ToList();
+            vm.Club = club;
+
+            return View(vm);
         }
 
         public async Task<IActionResult> Clubs(string category) 
@@ -182,11 +186,13 @@ namespace hva_som_skjer.Controllers
         [HttpPost]
         public async Task<IActionResult> AddNewsMethod(NewsModel news, int ClubId)
         {
+            _db.Add(news);
+            
             var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == ClubId);
+            var user = await _um.GetUserAsync(User);
+            news.Club = club;
+            news.poster = user.UserName;
 
-            club.News.Add(news);
-
-            //_db.Clubs.Update(club);
             _db.SaveChanges();
 
             return RedirectToAction("Club",new{ID = club.Id});
@@ -195,16 +201,24 @@ namespace hva_som_skjer.Controllers
         [HttpPost]
         public async Task<IActionResult> Generate(ClubModel club)
         {
+            Admin ClubAdmin = new Admin();
+
+            club.Admins.Add(ClubAdmin);
+            _db.Clubs.Add(club);
+
+
             club.Image = "../../images/LogoPictures/tempLogo.png";
             club.BannerImage = "../../images/BannerPictures/defaultBanner.png";
 
             var user = await _um.GetUserAsync(User);
-            Admin ClubAdmin = new Admin();
-            ClubAdmin.admin = user;
-            club.Admins.Add(ClubAdmin);
+            
+            ClubAdmin.ClubModel = club;
+            ClubAdmin.User = user;
 
-            _db.Clubs.Add(club);
+            //_db.Clubs.Update(club);
+            //_db.Admins.Update(ClubAdmin);
             _db.SaveChanges();
+
             return RedirectToAction("Club",new{ID = club.Id});
         }
 

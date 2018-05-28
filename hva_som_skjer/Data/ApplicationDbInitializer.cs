@@ -62,7 +62,9 @@ namespace hva_som_skjer.Data
                 element.BannerImage = "../../images/BannerPictures/defaultBanner.png";
 
                 Admin ClubAdmin = new Admin();
-                ClubAdmin.admin= user;
+                ClubAdmin.User= user;
+                ClubAdmin.ClubModel = element;
+
                 element.Admins.Add(ClubAdmin);
             }
 

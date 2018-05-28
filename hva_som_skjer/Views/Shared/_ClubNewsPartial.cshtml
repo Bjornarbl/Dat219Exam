@@ -1,6 +1,63 @@
 @model hva_som_skjer.Models.NewsModel
+</div>
+<div class="container footer">
+    <div class="card">
+        <h5 class="card-header">@Html.DisplayFor(model => model.Title)</h5>
+        <div class="card-body">
+            <p class="card-text">@Html.DisplayFor(model => model.Content)</p>
+            <br/>
+            <p class="card-text">
+                <small class="text-muted">@Html.DisplayFor(model => model.Posted)</br>
+                    @Html.DisplayFor(model => model.poster)</small>
+            </p>
+        </div>       
+    </div
+    <div class="comments">
+		<div class="comment-wrap">
+				<div class="photo">
+						<div class="avatar" style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/dancounsell/128.jpg')"></div>
+				</div>
+				<div class="comment-block">
+						<form action="">
+								<textarea name="" id="" cols="30" rows="3" placeholder="Add comment..."></textarea>
+						</form>
+				</div>
+		</div>
 
-<div class="card w-50 container">
-    test
-</div>    
+		<div class="comment-wrap">
+				<div class="photo">
+						<div class="avatar" style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg')"></div>
+				</div>
+				<div class="comment-block">
+						<p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto temporibus iste nostrum dolorem natus recusandae incidunt voluptatum. Eligendi voluptatum ducimus architecto tempore, quaerat explicabo veniam fuga corporis totam reprehenderit quasi
+								sapiente modi tempora at perspiciatis mollitia, dolores voluptate. Cumque, corrupti?</p>
+						<div class="bottom-comment">
+								<div class="comment-date">Aug 24, 2014 2:35 PM</div>
+								<ul class="comment-actions">
+										<li class="complain">Complain</li>
+										<li class="reply">Reply</li>
+								</ul>
+						</div>
+				</div>
+		</div>
+
+		<div class="comment-wrap">
+				<div class="photo">
+						<div class="avatar" style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/felipenogs/128.jpg')"></div>
+				</div>
+				<div class="comment-block">
+						<p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto temporibus iste nostrum dolorem natus recusandae incidunt voluptatum. Eligendi voluptatum ducimus architecto tempore, quaerat explicabo veniam fuga corporis totam.</p>
+						<div class="bottom-comment">
+								<div class="comment-date">Aug 23, 2014 10:32 AM</div>
+								<ul class="comment-actions">
+										<li class="complain">Complain</li>
+										<li class="reply">Reply</li>
+								</ul>
+						</div>
+				</div>
+		</div>
+</div>
+
+
 <br>
+

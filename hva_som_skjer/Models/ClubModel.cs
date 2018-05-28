@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace hva_som_skjer.Models
@@ -10,8 +12,8 @@ namespace hva_som_skjer.Models
     {
         public ClubModel()
         {
-            Admins = new List<Admin>();
-            News = new Collection<NewsModel>();
+            Admins = new Collection<Admin>();
+            News = new List<NewsModel>();
         }
 
         //denne brukes til json filen til å populere siden
@@ -73,32 +75,24 @@ namespace hva_som_skjer.Models
 
         public string BannerImage {get; set; }
 
-        public ICollection<Admin> Admins{get; set;}
 
-        public ICollection<NewsModel> News{get; set;}
-
+        public ICollection<Admin> Admins {get; set;}
+    
+        public List<NewsModel> News{get; set;}
+        
     }
 
     public class Admin
     {
+
         public Admin(){}
 
         [Key]
         public int ClubAdminId{get; set;}
 
-        public ApplicationUser admin{get; set;}
-
-
-    }
-
-    public class NewsPost
-    {
-
-        [Key]
-        public int ClubAdminId{get; set;}
-
-        public ApplicationUser admin{get; set;}
-
-        public ClubModel ClubModel{get; set;}        
+        public virtual ApplicationUser User{get; set;}
+        
+        public virtual ClubModel ClubModel{get; set;}
+        
     }
 }

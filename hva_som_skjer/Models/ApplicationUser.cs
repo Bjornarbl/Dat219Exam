@@ -10,6 +10,7 @@ namespace hva_som_skjer.Models
     public class ApplicationUser : IdentityUser
     {
         public string ProfilePicture { get; set; }
+        public ICollection<Admin> Admins {get; set;} 
 
     }
 }

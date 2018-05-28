@@ -4,18 +4,17 @@
 
 <div id="mySidenav" class="sidenav">
     <img class="card-img-top" src="@Model.Image" alt="Card image cap">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="#">Om Klubben</a>
     <a href="#">Kontakt</a>
     <a asp-action="EditClub" asp-route-id="@Model.Id">Rediger klubb </a>
 </div>
-
+<br/>
 <div id="main">
-    <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Meny</span>    
-</div>
+
 
 <form class="form-horizontal" method="post" enctype="ultipart/form-data" asp-controller="Club" asp-action="AddNewsMethod">
     <fieldset>
+    
     <legend>Publiser Nyhet</legend>
 
     <div class="form-group">
@@ -44,16 +43,35 @@
 
     </fieldset>
 </form>
+</div>
 
-
-<script>
-function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-    document.getElementById("main").style.marginLeft = "250px";
+<style>
+.sidenav {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgb(255, 255, 255);
+    overflow-x: hidden;
+    padding-top: 20px;
 }
 
-function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-    document.getElementById("main").style.marginLeft= "0";
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #1485ee;
+    display: block;
 }
-</script>
+
+.sidenav a:hover {
+    color: #000000;
+}
+
+#main {
+    margin-left: 200px; /* Same as the width of the sidenav */
+    padding: 0px 10px;
+}
+</style>

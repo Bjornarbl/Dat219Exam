@@ -10,16 +10,14 @@ namespace hva_som_skjer.Models
             Posted = DateTime.UtcNow;
         }
 
-        public CommentModel(string content, ApplicationUser author)
+        public CommentModel(string content, string author)
         {
             Content = content;
             Posted = DateTime.UtcNow;
-            Author = author;
         }
 
         public int Id { get; set; }
 
-        public ApplicationUser Author { get; set; }
 
         [Display(Name="Innhold")]
         public string Content { get; set; }
