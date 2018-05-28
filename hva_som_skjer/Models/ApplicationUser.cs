@@ -10,7 +10,14 @@ namespace hva_som_skjer.Models
     public class ApplicationUser : IdentityUser
     {
         public string ProfilePicture { get; set; }
-        public ICollection<Admin> Admins {get; set;} 
+        public List<Subscription> subscriptions{get; set;}
 
+    }
+
+    public class Subscription
+    {      
+        public int Id{get; set;}
+        public ApplicationUser user{get; set;}
+        public ClubModel club {get; set;}
     }
 }

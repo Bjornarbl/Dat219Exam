@@ -1,0 +1,127 @@
+@model hva_som_skjer.Models.CommentViewModel
+
+<div class="container footer">
+    <div class="card">
+        <h5 class="card-header">@Html.DisplayFor(model => model.NewsModel.Title)</h5>
+        <div class="card-body">
+            <p class="card-text">@Html.DisplayFor(model => model.NewsModel.Content)</p>
+            <br/>
+            <p class="card-text">
+                <small class="text-muted">@Html.DisplayFor(model => model.NewsModel.Posted)</br>
+                    @Html.DisplayFor(model => model.NewsModel.poster)</small>
+            </p>
+        </div>       
+    </div
+    <div class="comments">
+		<div class="comment-wrap">
+				<div class="photo">
+						 <img class="avatar" src="@Model.User.ProfilePicture" alt="Card image cap">
+				</div>
+				<div class="comment-block">
+						<form method="post" enctype="ultipart/form-data" asp-controller="Club" asp-action="AddComment">
+								<textarea name="Content" id="Content" cols="30" rows="3" placeholder="Add comment..."></textarea>
+								<input id="NewsId" name="NewsId" type="hidden" value="@Html.DisplayFor(model => model.NewsModel.Id)">
+								<button id="singlebutton" name="singlebutton" class="btn btn-inverce" >Submit</button>
+						</form>
+				</div>
+		</div>
+
+
+		@foreach(var s in Model.CommentModel)
+    	{
+			if(s.NewsId == Model.NewsModel.Id)
+			{
+			<div class="comment-wrap">
+				<div class="photo">
+						<img class="avatar" src="@Html.DisplayFor(model => s.AuthorPicture)" alt="Card image cap">
+				</div>
+				<div class="comment-block">
+						<p class="comment-text">@Html.DisplayFor(model => s.Content)</p>
+						<div class="bottom-comment">
+								<div class="comment-date">@Html.DisplayFor(model => s.Posted)</div>
+								<ul class="comment-actions">
+										<li class="delete">delete</li>
+										
+								</ul>
+						</div>
+				</div>
+			</div>
+			}
+			
+		}
+		
+</div>
+
+<style>
+.comments {
+  margin: 2.5rem auto 0;
+  max-width: 60.75rem;
+  padding: 0 1.25rem;
+}
+
+.comment-wrap {
+  margin-bottom: 1.25rem;
+  display: table;
+  width: 100%;
+  min-height: 5.3125rem;
+}
+
+.photo {
+  padding-top: 0.625rem;
+  display: table-cell;
+  width: 3.5rem;
+}
+.photo .avatar {
+  height: 2.25rem;
+  width: 2.25rem;
+  border-radius: 50%;
+  background-size: contain;
+}
+
+.comment-block {
+  padding: 1rem;
+  background-color: #fff;
+  display: table-cell;
+  vertical-align: top;
+  border-radius: 0.1875rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+}
+.comment-block textarea {
+  width: 100%;
+  resize: none;
+}
+
+.comment-text {
+  margin-bottom: 1.00rem;
+}
+
+.bottom-comment {
+  color: #acb4c2;
+  font-size: 0.875rem;
+}
+
+.comment-date {
+  float: left;
+}
+
+.comment-actions {
+  float: right;
+}
+.comment-actions li {
+  display: inline;
+  margin: -1px;
+  cursor: pointer;
+}
+.comment-actions li.complain {
+  padding-right: 0.75rem;
+  border-right: 1px solid #e1e5eb;
+}
+.comment-actions li.reply {
+  padding-left: 0.75rem;
+  padding-right: 0.125rem;
+}
+.comment-actions li:hover {
+  color: #0095ff;
+}
+</style>
+
