@@ -136,9 +136,8 @@ namespace hva_som_skjer.Controllers
             
             try
             {
-                 string filename = string.Format(@"{0}.png", Guid.NewGuid());
-                
                 var oldPicture = club.Image;
+                string filename = string.Format(@"{0}.png", Guid.NewGuid());
                 club.Image = "../../images/LogoPictures/"+filename;
                 _db.Clubs.Update(club);
                 _db.SaveChanges();
@@ -151,6 +150,13 @@ namespace hva_som_skjer.Controllers
                     await files[0].CopyToAsync(stream);
                 }
                 //TODO: delete old profile picture. Problem is Access to path * is denied
+                if(oldPicture != "../../images/LogoPictures/tempLogo.png")
+                {
+                    char[] MyChar = {'.', '.','/' };
+                    string tempName = oldPicture.TrimStart(MyChar);
+                    tempName = "../hva_som_skjer/wwwroot/"+tempName;
+                    System.IO.File.Delete(tempName);
+                }
             }catch{ return RedirectToAction("EditClub",new{ID = club.Id});}    
             
             return RedirectToAction("Club",new{ID = club.Id});
@@ -163,9 +169,8 @@ namespace hva_som_skjer.Controllers
             
             try
             {
-                string filename = string.Format(@"{0}.png", Guid.NewGuid());
-                                
                 var oldPicture = club.BannerImage;
+                string filename = string.Format(@"{0}.png", Guid.NewGuid());
                 club.BannerImage = "../../images/BannerPictures/"+filename;
                 _db.Clubs.Update(club);
                 _db.SaveChanges();
@@ -179,6 +184,13 @@ namespace hva_som_skjer.Controllers
                     await files[0].CopyToAsync(stream);
                 }
             //TODO: delete old profile picture. Problem is Access to path * is denied
+            if(oldPicture != "../../images/BannerPictures/defaultBanner.png")
+                {
+                    char[] MyChar = {'.', '.','/' };
+                    string tempName = oldPicture.TrimStart(MyChar);
+                    tempName = "../hva_som_skjer/wwwroot/"+tempName;
+                    System.IO.File.Delete(tempName);
+                }
             }catch
             {
                 return RedirectToAction(nameof(Index));

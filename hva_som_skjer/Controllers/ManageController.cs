@@ -450,24 +450,35 @@ namespace hva_som_skjer.Controllers
         [HttpPost]
         public async Task<IActionResult> Upload(List<IFormFile> files)
         {
-            string filename = string.Format(@"{0}.png", Guid.NewGuid());
-            var localPath = Directory.GetCurrentDirectory();
-            string filePath = "\\data\\ProfilePictures\\"+filename;
-            string wholePath = localPath+filePath;
+            
             
             if (files[0].Length > 0)
             {
+                string filename = string.Format(@"{0}.png", Guid.NewGuid());            
+                string path = "../../images/ProfilePictures/"+filename; 
                 var user = await _userManager.GetUserAsync(User);
                 var oldPicture = user.ProfilePicture;
-                user.ProfilePicture = filename;
+                user.ProfilePicture = path;
                 await _userManager.UpdateAsync(user);
 
-
+                var localPath = Directory.GetCurrentDirectory();
+                string filePath = "\\wwwroot\\images\\ProfilePictures\\"+filename;
+                string wholePath = localPath+filePath;
                 using (var stream = new FileStream(wholePath, FileMode.Create))
                 {
                     await files[0].CopyToAsync(stream);
                 }
                 //TODO: delete old profile picture. Problem is Access to pat * is denied
+                if(oldPicture != "../../images/ProfilePictures/tempProfile.png")
+                {
+                    char[] MyChar = {'.', '.','/' };
+                    string tempName = oldPicture.TrimStart(MyChar);
+                    tempName = "../hva_som_skjer/wwwroot/"+tempName;
+                    System.IO.File.Delete(tempName);
+                }
+                
+
+
             }    
             
             return RedirectToAction(nameof(Index));
