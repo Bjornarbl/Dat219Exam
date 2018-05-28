@@ -71,7 +71,7 @@ namespace hva_som_skjer.Data
 
             context.Clubs.AddRange(json_clubs); 
             var json_events = (List<Event>)JsonConvert.DeserializeObject(
-                System.IO.File.ReadAllText("Data/MOCK_DATA(1).json"),
+                System.IO.File.ReadAllText("Data/events.json"),
                 typeof(List<Event>)
             );
 

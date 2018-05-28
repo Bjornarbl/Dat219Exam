@@ -33,10 +33,20 @@
                 <span asp-validation-for="StartTime" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="EndTime" class="control-label"></label>
+                <input asp-for="EndTime" class="form-control" />
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Location" class="control-label"></label>
                 <input asp-for="Location" class="form-control" />
                 <span asp-validation-for="Location" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label class="control-label">Endre bilde:</label>
+                <input class="pull-right" type="file" name="file" />
+            </div>
+            <input type="hidden" asp-for="ImagePath">
             <div class="form-group">
                 <input type="submit" value="Lagre" class="btn btn-default" />
                 <a class="pull-right" asp-action="Index">Avbryt</a>

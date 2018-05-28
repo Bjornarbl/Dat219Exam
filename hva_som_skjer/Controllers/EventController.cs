@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using hva_som_skjer.Data;
 using hva_som_skjer.Models;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace hva_som_skjer.Controllers
 {
@@ -64,10 +66,32 @@ namespace hva_som_skjer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,StartDate,StartTime,Location")] Event @event)
+        public async Task<IActionResult> Create([Bind("Id,Title,Content,StartDate,StartTime,EndTime,Location")] Event @event, IFormFile file)
         {
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+                    string filename = string.Format(@"{0}.png", Guid.NewGuid());
+                    string filePath = "/images/events/"+filename;
+
+                    var localPath = Directory.GetCurrentDirectory();
+                    localPath += "/wwwroot/" + filePath;
+
+                    if (file.Length > 0)
+                    {
+                        using (var stream = new FileStream(localPath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+                    }
+                    @event.ImagePath = filePath;
+                }
+                else 
+                {
+                    @event.ImagePath = "/images/events/EventDefault.PNG";
+                }
+                
                 _db.Add(@event);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -96,7 +120,7 @@ namespace hva_som_skjer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,StartDate,StartTime,Location")] Event @event)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,StartDate,StartTime,EndTime,Location,ImagePath")] Event @event, IFormFile file)
         {
             if (id != @event.Id)
             {
@@ -105,6 +129,27 @@ namespace hva_som_skjer.Controllers
 
             if (ModelState.IsValid)
             {
+                if (file != null)
+                {
+                    string filename = string.Format(@"{0}.png", Guid.NewGuid());
+                    string filePath = "/images/events/"+filename;
+
+                    var localPath = Directory.GetCurrentDirectory();
+                    localPath += "/wwwroot/" + filePath;
+
+                    if (file.Length > 0)
+                    {
+                        using (var stream = new FileStream(localPath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+                    }
+                    @event.ImagePath = filePath;
+
+                    // TODO: Delete old image
+                    // TODO: Virker ikke. File er alltid null
+                }
+
                 try
                 {
                     _db.Update(@event);

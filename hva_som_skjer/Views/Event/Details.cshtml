@@ -10,7 +10,7 @@
     <div class="col-md-3">
         <div class="card" style="width: 18rem;">
             <div class="card-header">
-                Arrangementer
+                <i class="fa fa-calendar" aria-hidden="true"> </i> Arrangement
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><a asp-action="Index">Tilbake til Arrangementer</a></li>
@@ -23,7 +23,7 @@
 
         <div class="card" style="width: 18rem;">
             <div class="card-header">
-                Administrer
+                <i class="fa fa-wrench" aria-hidden="true"></i> Administrer
             </div>
             <ul class="list-group list-group-flush">
 
@@ -34,14 +34,14 @@
         </div>
     </div>
 
-    <div class="col event-card">
-        <div class="card">
-            <img class="card-img-top" src="~/images/EventDefault.PNG" alt="Card image cap">
+    <div class="col-md-6">
+        <div class="card event-card">
+            <img class="card-img-top" src="@Model.ImagePath" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">@Html.DisplayFor(model => model.Title)</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Arrangør: Beta</h6>
+                <h6 class="card-subtitle mb-2 text-muted">Arrangør: ARRANGØRNAVN</h6>
                 <hr />
-                <p class="card-text"><i class="fa fa-calendar" aria-hidden="true"></i> @Model.StartDate.ToLongDateString() klokken  @Html.DisplayFor(model => model.StartTime)</p>
+                <p class="card-text"><i class="fa fa-clock-o" aria-hidden="true"></i> </i> @Model.StartDate.ToLongDateString(), kl.  @Html.DisplayFor(model => model.StartTime) til @Html.DisplayFor(model => model.EndTime)</p>
                 <p class="card-text"><i class="fa fa-map-marker" aria-hidden="true"></i> @Html.DisplayFor(model => model.Location)</a>
                 <hr />
                 <p class="card-text"><small class="text-muted">Opprettet @Html.DisplayFor(model => model.Created)</small></p>

@@ -14,13 +14,13 @@ namespace hva_som_skjer.Models
 
         public int Id { get; set; }
 
-        //public int ClubId { get; set; }
-        //public ClubModel Club { get; set; }
+        public int ClubId { get; set; }
+        public ClubModel Club { get; set; }
 
         //public List<EventAttendees> EventAttendees { get; set; }
 
         [StringLength(60, MinimumLength = 3)]
-        [Display(Name="Tittel")]
+        [Display(Name="Tittel*")]
         [Required]
         public string Title { get; set; }
 
@@ -29,18 +29,25 @@ namespace hva_som_skjer.Models
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name="Dato")]
+        [Display(Name="Dato*")]
         public DateTime StartDate { get; set; }
 
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:H:mm}")]
-        [Display(Name="Klokkeslett")]
+        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
+        [Display(Name="Tidspunkt*")]
         public DateTime StartTime { get; set; }
+
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
+        [Display(Name="Sluttidspunkt*")]
+        public DateTime EndTime { get; set; }
 
         [Display(Name="Sted")]
         public string Location { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime Created { get; set; }
+
+        public string ImagePath { get; set; }
     }
 }
