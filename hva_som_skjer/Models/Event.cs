@@ -14,8 +14,8 @@ namespace hva_som_skjer.Models
 
         public int Id { get; set; }
 
-        public int ClubId { get; set; }
-        public ClubModel Club { get; set; }
+        //public int ClubId { get; set; }
+        //public ClubModel Club { get; set; }
 
         //public List<EventAttendees> EventAttendees { get; set; }
 

@@ -70,12 +70,13 @@ namespace hva_som_skjer.Data
             }
 
             context.Clubs.AddRange(json_clubs); 
-            var json_events = (List<Event>)JsonConvert.DeserializeObject(
-                System.IO.File.ReadAllText("Data/events.json"),
-                typeof(List<Event>)
-            );
 
-            context.Events.AddRange(json_events); 
+            // Event dummies
+            //var json_events = (List<Event>)JsonConvert.DeserializeObject(
+            //    System.IO.File.ReadAllText("Data/events.json"),
+            //    typeof(List<Event>)
+            //);
+            //context.Events.AddRange(json_events); 
 
             context.SaveChanges();
         }
