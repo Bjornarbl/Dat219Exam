@@ -1,81 +1,14 @@
-﻿@{
+﻿@model hva_som_skjer.Models.SubscrtiptionViewModel
+
+@{
     ViewData["Title"] = "Hjem";
 }
 
-<div class="simple-slider">
-    <div class="swiper-container">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide" style="background-image:url(&quot;images/art-colorful-colourful-163822.jpg&quot;);color:rgb(40,81,123);"></div>
-            <div class="swiper-slide" style="background-image:url(&quot;images/action-air-balance-345415 2.jpg&quot;);"></div>
-            <div class="swiper-slide" style="background-image:url(&quot;images/abstract-art-blur-20721.jpg&quot;);"></div>
-        </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-    </div>
-</div>
-<div class="team-clean">
-    <div class="container">
-        <div class="intro">
-            <h2 class="text-center">Litt Om Hva Som Skjer</h2>
-            <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim 
-                ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
-                ex ea commodo consequat. 
-            </p>
-        </div>
-        <div class="row people">
-            <div class="col-md-6 col-lg-4 item">
-                <img class="rounded-circle" src="images/news.png">
-                <h3 class="name">NYHETER</h3>
-                <p class="title">MUSIKER</p>
-                <p class="description">Få meg deg hva som skjer i ditt lokalmiljø.</p>
-                <div class="social">
-                    <a href="#">
-                        <i class="fa fa-facebook-official"></i>
-                    </a>
-                    <a href="#">
-                        <i class="fa fa-twitter"></i>
-                    </a>
-                    <a href="#">
-                        <i class="fa fa-instagram"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 item">
-                <img class="rounded-circle" src="images/location.png">
-                <h3 class="name">Arrangementer</h3>
-                <p class="title">KUNSTNER</p>
-                <p class="description">Finn arrangementer nær deg.</p>
-                <div class="social">
-                    <a href="#">
-                        <i class="fa fa-facebook-official"></i>
-                    </a>
-                    <a href="#">
-                        <i class="fa fa-twitter"></i>
-                    </a>
-                    <a href="#">
-                        <i class="fa fa-instagram"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 item">
-                <img class="rounded-circle" src="images/clo 2.png">
-                <h3 class="name">KALENDER</h3>
-                <p class="title">STYLIST</p>
-                <p class="description">Få oversikt over hva som skjer.</p>
-                <div class="social">
-                    <a href="#">
-                        <i class="fa fa-facebook-official"></i>
-                    </a>
-                    <a href="#">
-                        <i class="fa fa-twitter"></i>
-                    </a>
-                    <a href="#">
-                        <i class="fa fa-instagram"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+@{
+    if(User.Identity.IsAuthenticated)
+    {
+        Html.RenderPartial("_HomeLogedInnPartial", Model);
+    }else{
+        Html.RenderPartial("_HomeNotLogedInnPartial");
+    }
+}

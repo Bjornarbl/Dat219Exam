@@ -44,7 +44,7 @@ namespace hva_som_skjer.Controllers
                 return NotFound();
             }
 
-            var vm = new NewsViewModel();
+            var vm = new Models.NewsViewModel();
 
             vm.NewsModel = _db.News.OrderByDescending(NewsModel => NewsModel.Id).ToList();
             vm.CommentModel =_db.Comments.ToList();
@@ -223,7 +223,7 @@ namespace hva_som_skjer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddComment(CommentModel comment)
+        public async Task<IActionResult> AddComment(CommentModel comment, string returnURL)
         {
             
             var news = await _db.News.SingleOrDefaultAsync(m => m.Id == comment.NewsId);
@@ -237,6 +237,22 @@ namespace hva_som_skjer.Controllers
         
 
             _db.Comments.Add(comment);
+            _db.SaveChanges();
+
+            return RedirectToAction("Club",new{ID = club.Id});
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Subscribe(int clubId)
+        {
+            var user = await _um.GetUserAsync(User);
+            var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == clubId);
+
+            Subscription subscription = new Subscription();
+            subscription.club = club;
+            subscription.user = user;  
+
+            _db.Add(subscription);
             _db.SaveChanges();
 
             return RedirectToAction("Club",new{ID = club.Id});
