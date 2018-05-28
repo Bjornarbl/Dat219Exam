@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace hva_som_skjer.Models
@@ -8,18 +9,19 @@ namespace hva_som_skjer.Models
         public NewsModel() 
         {
             Posted = DateTime.UtcNow;
+            Comments = new List<CommentModel>();
         }
 
-        public NewsModel(string title, string content, string club)
+        public NewsModel(string title, string content, ClubModel club)
         {
-            Content = content;
-            Posted = DateTime.UtcNow;
-            Club = club;
+            this.Title = title;
+            this.Content = content;
+            this.Posted = DateTime.UtcNow;
+            this.Comments = new List<CommentModel>();
+            this.Club = club;
         }
 
         public int Id { get; set; }
-
-        public string Club { get; set; }
 
         [Display(Name="Tittel")]
         public string Title { get; set; }
@@ -30,5 +32,18 @@ namespace hva_som_skjer.Models
         [Display(Name="Publisert")]
         [DataType(DataType.Date)]
         public DateTime Posted { get; set; }
+
+        [Display(Name="Poster")]
+        public string poster { get; set; }
+
+        public string Image {get; set; }
+
+        
+        public int clubId {get; set;}
+        public ClubModel Club {get; set;}
+        
+
+
+        public List<CommentModel> Comments { get; set; }
     }
 }

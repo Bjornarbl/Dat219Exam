@@ -1,70 +1,138 @@
-@model hva_som_skjer.Models.ClubModel
+@model hva_som_skjer.Models.NewsViewModel
 
 @{
-    ViewData["Title"] = @Html.DisplayFor(model => model.Name);
+    ViewData["Title"] = @Html.DisplayFor(model => model.Club.Name);
 }
 
-<h2>@Html.DisplayFor(model => model.Name)</h2>
 
-<div>
-    <h4>@Html.DisplayFor(model => model.Category)</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Category)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>        
-        <dt>
-            @Html.DisplayNameFor(model => model.Contact)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Contact)
-        </dd>        
-        <dt>
-            @Html.DisplayNameFor(model => model.Adress)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Adress)
-        </dd>        
-        <dt>
-            @Html.DisplayNameFor(model => model.Website)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Website)
-        </dd>        
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Founded)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Founded)
-        </dd>
-        
-       <div class="team-grid">
-            <div class="container">
-                <div class="intro">
-                    <a asp-action="EditClub" asp-route-id="@Model.Id">rediger klubb </a>
-                </div>
-            </div>
-        </div>
-    </dl>
+<div class="sidenav">
+    <img class="card-img-top" src="@Model.Club.Image" alt="Card image cap">  
+    <a href="#">Kontakt</a>
+    <a asp-action="EditClub" asp-route-id="@Model.Club.Id">Rediger klubb </a>
+    <a asp-action="addNews" asp-route-id="@Model.Club.Id">Publiser nyhet </a>
 </div>
+
+<div class="main">
+    <div class="card mb-3">
+        <img class="card-img-top" src="@Model.Club.BannerImage" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">@Html.DisplayFor(model => model.Club.Name)</h5>
+            <p class="card-text">@Html.DisplayFor(model => model.Club.Description)</p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        </div>
+    </div>
+
+    @foreach(var s in Model.NewsModel)
+    {
+      var comments = Model.CommentModel;
+      var user = Model.User;
+
+      var vm = new CommentViewModel(s,comments,user);
+      if(s.clubId == Model.Club.Id)
+        {
+          Html.RenderPartial("_ClubNewsPartial", vm);
+        }
+    }
+</div>
+
+<style>
+.sidenav {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgb(255, 255, 255);
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #1485ee;
+    display: block;
+}
+
+.sidenav a:hover {
+    color: #000000;
+}
+
+.main {
+    margin-left: 200px; /* Same as the width of the sidenav */
+    padding: 0px 10px;
+}
+
+.comments {
+  margin: 2.5rem auto 0;
+  max-width: 60.75rem;
+  padding: 0 1.25rem;
+}
+
+.comment-wrap {
+  margin-bottom: 1.25rem;
+  display: table;
+  width: 100%;
+  min-height: 5.3125rem;
+}
+
+.photo {
+  padding-top: 0.625rem;
+  display: table-cell;
+  width: 3.5rem;
+}
+.photo .avatar {
+  height: 2.25rem;
+  width: 2.25rem;
+  border-radius: 50%;
+  background-size: contain;
+}
+
+.comment-block {
+  padding: 1rem;
+  background-color: #fff;
+  display: table-cell;
+  vertical-align: top;
+  border-radius: 0.1875rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+}
+.comment-block textarea {
+  width: 100%;
+  resize: none;
+}
+
+.comment-text {
+  margin-bottom: 1.00rem;
+}
+
+.bottom-comment {
+  color: #acb4c2;
+  font-size: 0.875rem;
+}
+
+.comment-date {
+  float: left;
+}
+
+.comment-actions {
+  float: right;
+}
+.comment-actions li {
+  display: inline;
+  margin: -1px;
+  cursor: pointer;
+}
+.comment-actions li.complain {
+  padding-right: 0.75rem;
+  border-right: 1px solid #e1e5eb;
+}
+.comment-actions li.reply {
+  padding-left: 0.75rem;
+  padding-right: 0.125rem;
+}
+.comment-actions li:hover {
+  color: #0095ff;
+}
+</style>

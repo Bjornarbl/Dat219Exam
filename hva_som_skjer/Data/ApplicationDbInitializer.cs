@@ -12,6 +12,7 @@ namespace hva_som_skjer.Data
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
+
             /* 
                 context.Clubs.AddRange(new List<ClubModel>{
                 new ClubModel("Tufte IL", 
@@ -48,17 +49,31 @@ namespace hva_som_skjer.Data
             });
             */
 
+            var user = new ApplicationUser{UserName="email@email.com", Email = "email@email.com"};
+            user.ProfilePicture ="../../images/ProfilePictures/tempProfile.png";
+            um.CreateAsync(user, "Password1.").Wait();
+
             var json_clubs = (List<ClubModel>)JsonConvert.DeserializeObject(
                 System.IO.File.ReadAllText("Data/clubs.json"),
                 typeof(List<ClubModel>)
             );
 
+            foreach(var element in json_clubs)
+            {
+                element.BannerImage = "../../images/BannerPictures/defaultBanner.png";
+
+                Admin ClubAdmin = new Admin();
+                ClubAdmin.User= user;
+                ClubAdmin.ClubModel = element;
+
+                element.Admins.Add(ClubAdmin);
+            }
+
             context.Clubs.AddRange(json_clubs); 
 
         
 
-            var user = new ApplicationUser{UserName="email@email.com", Email = "email@email.com"};
-            um.CreateAsync(user, "Password1.").Wait();
+            
             context.SaveChanges();
 
 

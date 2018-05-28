@@ -18,6 +18,7 @@ namespace hva_som_skjer.Controllers
         private ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _um;
 
+
         public ClubController(ApplicationDbContext db ,UserManager<ApplicationUser> um)
         {
             _db = db;
@@ -36,14 +37,22 @@ namespace hva_som_skjer.Controllers
                 return NotFound();
             }
 
-            var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == id);
+            var clubtemp = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == id);
 
-            if (club == null)
+            if (clubtemp == null)
             {
                 return NotFound();
             }
 
-            return View(club);
+            var vm = new NewsViewModel();
+
+            vm.NewsModel = _db.News.OrderByDescending(NewsModel => NewsModel.Id).ToList();
+            vm.CommentModel =_db.Comments.ToList();
+
+            vm.Club = clubtemp;
+            vm.User = await _um.GetUserAsync(User);
+
+            return View(vm);
         }
 
         public async Task<IActionResult> Clubs(string category) 
@@ -83,61 +92,79 @@ namespace hva_som_skjer.Controllers
 
             return View(club);
         }
+        public async Task<IActionResult> AddNews(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == id);
+
+            if (club == null)
+            {
+                return NotFound();
+            }
+
+            return View(club);
+        }
 
         [HttpPost]
         public async Task<IActionResult> UploadLogo(List<IFormFile> files, int Id)
         {
-            string filename = string.Format(@"{0}.png", Guid.NewGuid());
-            var localPath = Directory.GetCurrentDirectory();
-            string filePath = "\\data\\LogoPictures\\"+filename;
-            string wholePath = localPath+filePath;
-
             var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == Id);
             
-            if (files[0].Length > 0)
+            try
             {
+                 string filename = string.Format(@"{0}.png", Guid.NewGuid());
                 
                 var oldPicture = club.Image;
-                club.Image = filename;
+                club.Image = "../../images/LogoPictures/"+filename;
                 _db.Clubs.Update(club);
                 _db.SaveChanges();
 
+                var localPath = Directory.GetCurrentDirectory();
+                string filePath = "\\wwwroot\\images\\LogoPictures\\"+filename;
+                string wholePath = localPath+filePath;
                 using (var stream = new FileStream(wholePath, FileMode.Create))
                 {
                     await files[0].CopyToAsync(stream);
                 }
                 //TODO: delete old profile picture. Problem is Access to path * is denied
-            }    
+            }catch{ return RedirectToAction("EditClub",new{ID = club.Id});}    
             
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Club",new{ID = club.Id});
         }
 
         [HttpPost]
         public async Task<IActionResult> UploadBanner(List<IFormFile> files, int Id)
         {
-            string filename = string.Format(@"{0}.png", Guid.NewGuid());
-            var localPath = Directory.GetCurrentDirectory();
-            string filePath = "\\data\\BannerPictures\\"+filename;
-            string wholePath = localPath+filePath;
-
             var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == Id);
             
-            if (files[0].Length > 0)
+            try
             {
-                
+                string filename = string.Format(@"{0}.png", Guid.NewGuid());
+                                
                 var oldPicture = club.BannerImage;
-                club.BannerImage = filename;
+                club.BannerImage = "../../images/BannerPictures/"+filename;
                 _db.Clubs.Update(club);
                 _db.SaveChanges();
 
+
+                var localPath = Directory.GetCurrentDirectory();
+                string filePath = "\\wwwroot\\images\\BannerPictures\\"+filename;
+                string wholePath = localPath+filePath;
                 using (var stream = new FileStream(wholePath, FileMode.Create))
                 {
                     await files[0].CopyToAsync(stream);
                 }
-                //TODO: delete old profile picture. Problem is Access to path * is denied
+            //TODO: delete old profile picture. Problem is Access to path * is denied
+            }catch
+            {
+                return RedirectToAction(nameof(Index));
             }    
             
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Club",new{ID = club.Id});
         }
 
         [HttpPost]
@@ -157,24 +184,70 @@ namespace hva_som_skjer.Controllers
             _db.Clubs.Update(club);
             _db.SaveChanges();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Club",new{ID = club.Id});
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddNewsMethod(NewsModel news, int ClubId)
+        {
+            _db.Add(news);
+            
+            var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == ClubId);
+            var user = await _um.GetUserAsync(User);
+            news.Club = club;
+            news.poster = user.UserName;
+
+            _db.SaveChanges();
+
+            return RedirectToAction("Club",new{ID = club.Id});
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddComment(CommentModel comment)
+        {
+            
+            var news = await _db.News.SingleOrDefaultAsync(m => m.Id == comment.NewsId);
+
+            var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == news.clubId);
+
+            var user = await _um.GetUserAsync(User);
+            comment.Author = user.UserName;
+            comment.AuthorPicture = user.ProfilePicture;
+            comment.news = news;
+        
+
+            _db.Comments.Add(comment);
+            _db.SaveChanges();
+
+            return RedirectToAction("Club",new{ID = club.Id});
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Generate(ClubModel club)
         {
-            var localPath = Directory.GetCurrentDirectory();
+            Admin ClubAdmin = new Admin();
 
-            club.Image = "images/tempLogo.png";
-            club.BannerImage = "images/tempLogo.png";
-            //var user = await _um.GetUserAsync(User);
-            //var ad = new Models.Admin(0,user.Email);
-            //club.AdminString.Add(ad);
-
+            club.Admins.Add(ClubAdmin);
             _db.Clubs.Add(club);
+
+
+            club.Image = "../../images/LogoPictures/tempLogo.png";
+            club.BannerImage = "../../images/BannerPictures/defaultBanner.png";
+
+            var user = await _um.GetUserAsync(User);
+            
+            ClubAdmin.ClubModel = club;
+            ClubAdmin.User = user;
+
+            //_db.Clubs.Update(club);
+            //_db.Admins.Update(ClubAdmin);
             _db.SaveChanges();
-            return RedirectToAction(nameof(Index));
+
+            return RedirectToAction("Club",new{ID = club.Id});
         }
+
+
 
         public IActionResult Error()
         {

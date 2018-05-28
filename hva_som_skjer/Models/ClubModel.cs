@@ -1,15 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace hva_som_skjer.Models
-{
+{   
     public class ClubModel
     {
+        public ClubModel()
+        {
+            Admins = new Collection<Admin>();
+            News = new List<NewsModel>();
+        }
 
-        public ClubModel() {}
-        public ClubModel(string name, string category, string description, string contact, string adress, string website, string email, string phone, int founded, string image) 
+        //denne brukes til json filen til å populere siden
+        public ClubModel(string name,   string category, string description, string contact,
+                         string adress, string website,  string email,       string phone, int founded, string image) 
         { 
             this.Name = name;
             this.Category = category;
@@ -21,10 +30,11 @@ namespace hva_som_skjer.Models
             this.Phone = phone;
             this.Founded = founded;
             this.Image = image;
-        }      
+
+        }
 
         //TODO: List for admin users, news, comments and events.
-        
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -59,35 +69,30 @@ namespace hva_som_skjer.Models
         public string Phone { get; set; }
 
         [Display(Name="Stiftet")]
-        public int Founded { get; set; }
+        public int? Founded { get; set; }
 
         public string Image {get; set; }
 
         public string BannerImage {get; set; }
 
-        public List<Admin> AdminString { get; set; }
 
-        public List<ApplicationUser> Admins { get; set; }
-
-        public List<NewsModel> NewsList { get; set; }
-        public List<CommentModel> Comments { get; set; }
-
-        
+        public ICollection<Admin> Admins {get; set;}
+    
+        public List<NewsModel> News{get; set;}
         
     }
+
     public class Admin
     {
+
         public Admin(){}
-        public Admin(int id ,string admin)
-        {
-            this.Id = id;
-            this.AdminString = admin;
-        }
 
-        public int Id{get; set;}
-        public string AdminString{get; set;}
+        [Key]
+        public int ClubAdminId{get; set;}
 
-     
+        public virtual ApplicationUser User{get; set;}
+        
+        public virtual ClubModel ClubModel{get; set;}
+        
     }
-     
 }
