@@ -1,57 +1,70 @@
 @model hva_som_skjer.Models.CommentViewModel
-</div>
-<div class="container footer">
-    <div class="card">
-        <h5 class="card-header">@Html.DisplayFor(model => model.NewsModel.Title)</h5>
-        <div class="card-body">
-            <p class="card-text">@Html.DisplayFor(model => model.NewsModel.Content)</p>
-            <br/>
-            <p class="card-text">
-                <small class="text-muted">@Html.DisplayFor(model => model.NewsModel.Posted)</br>
-                    @Html.DisplayFor(model => model.NewsModel.poster)</small>
-            </p>
-        </div>       
-    </div
-    <div class="comments">
-		<div class="comment-wrap">
-				<div class="photo">
-						 <img class="avatar" src="@Model.User.ProfilePicture" alt="Card image cap">
-				</div>
-				<div class="comment-block">
+
+<div>
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-10">
+    		<div class="card">
+  				<h5 class="card-header">
+    				@Html.DisplayFor(model => model.NewsModel.Title)
+    				<small class="text-muted pull-right">Skrevet @Html.DisplayFor(model => model.NewsModel.Posted)</small>
+  				</h5>        
+				<div class="card-body">
+            		<p class="card-text">
+						@Html.DisplayFor(model => model.NewsModel.Content)
+					</p>
+            		<br/>
+            		<p class="card-text">
+                		<small class="text-muted">Av: @Html.DisplayFor(model => model.NewsModel.poster)</small>
+            		</p>
+        		</div>       
+    		</div
+    		<div class="comments">
+				<div class="comment-wrap">
+					<div class="photo">
+						<img class="avatar" src="@Model.User.ProfilePicture" alt="Card image cap">
+					</div>
+					<div class="comment-block">
 						<form method="post" enctype="ultipart/form-data" asp-controller="Club" asp-action="AddComment">
-								<textarea name="Content" id="Content" cols="30" rows="3" placeholder="Add comment..."></textarea>
-								<input id="NewsId" name="NewsId" type="hidden" value="@Html.DisplayFor(model => model.NewsModel.Id)">
-								<button id="singlebutton" name="singlebutton" class="btn btn-inverce" >Submit</button>
+							<input class="form-control pull-left" style="width:60%;" name="Content" id="Content" cols="30" rows="3" placeholder="Add comment...">
+							<input id="NewsId" name="NewsId" type="hidden" value="@Html.DisplayFor(model => model.NewsModel.Id)">
+							<button id="singlebutton" name="singlebutton" class="btn btn-inverce" >Submit</button>
 						</form>
+					</div>
 				</div>
+			</div>
 		</div>
+	</div>
 
-
+	<div clas="row">
 		@foreach(var s in Model.CommentModel)
     	{
 			if(s.NewsId == Model.NewsModel.Id)
 			{
-			<div class="comment-wrap">
-				<div class="photo">
-						<img class="avatar" src="@Html.DisplayFor(model => s.AuthorPicture)" alt="Card image cap">
-				</div>
-				<div class="comment-block">
-						<p class="comment-text">@Html.DisplayFor(model => s.Content)</p>
-						<div class="bottom-comment">
-								<div class="comment-date">@Html.DisplayFor(model => s.Posted)</div>
-								<ul class="comment-actions">
-										<li class="delete">delete</li>
-										
-								</ul>
-						</div>
-				</div>
-			</div>
-			}
-			
-		}
-		
-</div>
+				<div class="row">
+					<div class="col-md-2"></div>
+        			<div class="col-md-1">
+            			<div class="thumbnail">
+                			<img class="img-fluid img-thumbnail user-photo" src="@Html.DisplayFor(model => s.AuthorPicture)">
+            			</div>
+        			</div>
 
+        			<div class="col-md-8">
+        			    <div class="card panel-default">
+        			        <div class="card-header">
+        			          <strong>myusername</strong> <span class="text-muted">@Html.DisplayFor(model => s.Posted)</span>
+        			        </div>
+        			        <div class="card-body">
+        			          <p class="card-text">@Html.DisplayFor(model => s.Content)</p>                
+        			        </div>
+        			    </div>
+        			</div>
+				</div>
+				<br>
+			}
+		}
+	</div>
+</div>
 
 <br>
 

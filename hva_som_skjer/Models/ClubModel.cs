@@ -14,6 +14,7 @@ namespace hva_som_skjer.Models
         {
             Admins = new Collection<Admin>();
             News = new List<NewsModel>();
+            Events = new List<Event>();
         }
 
         //denne brukes til json filen til å populere siden
@@ -79,6 +80,7 @@ namespace hva_som_skjer.Models
         public ICollection<Admin> Admins {get; set;}
     
         public List<NewsModel> News{get; set;}
+        
         public ICollection<Event> Events { get; set; }
         
     }

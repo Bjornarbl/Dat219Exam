@@ -21,11 +21,16 @@ namespace hva_som_skjer.Controllers
             _db = context;
         }
 
-        // GET: Event
-        public async Task<IActionResult> Index()
+        // GET: Event/key?ALl
+        public async Task<IActionResult> Index(int? key)
         {
-            var events = await _db.Events.ToListAsync();
-
+            if (key != null)
+            {
+                var evts = await _db.Events.Where(s => s.ClubId == key).Include(x => x.Club).ThenInclude(c => c.Admins).ToListAsync();
+                return View(evts.OrderBy(x => x.StartDate));
+            }
+   
+            var events = await _db.Events.Include(x => x.Club).ThenInclude(c => c.Admins).ToListAsync();
             return View(events.OrderBy(x => x.StartDate));
         }
 
@@ -45,19 +50,27 @@ namespace hva_som_skjer.Controllers
                 return NotFound();
             }
 
-            var @event = await _db.Events
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var @event = await _db.Events.Include(x => x.Club).ThenInclude(c => c.Admins).SingleOrDefaultAsync(m => m.Id == id);
+            
             if (@event == null)
             {
                 return NotFound();
             }
+            
 
             return View(@event);
         }
 
-        // GET: Event/Create
-        public IActionResult Create()
+        // GET: Event/Create/1
+        public IActionResult Create(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["clubEvent"] = id;
+
             return View();
         }
 
@@ -66,7 +79,7 @@ namespace hva_som_skjer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,StartDate,StartTime,EndTime,Location")] Event @event, IFormFile file)
+        public async Task<IActionResult> Create([Bind("Id,Title,Content,StartDate,StartTime,EndTime,Location,ClubId")] Event @event, IFormFile file)
         {
             if (ModelState.IsValid)
             {
@@ -91,10 +104,21 @@ namespace hva_som_skjer.Controllers
                 {
                     @event.ImagePath = "/images/events/EventDefault.PNG";
                 }
+
+                var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == @event.ClubId);
+
+                if (club == null)
+                {
+                    return NotFound();
+                }
                 
+                @event.Club = club;
+
+                club.Events.Add(@event);
                 _db.Add(@event);
+            
                 await _db.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), @event);
             }
             return View(@event);
         }

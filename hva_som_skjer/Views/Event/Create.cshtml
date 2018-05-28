@@ -45,6 +45,7 @@
                 <label asp-for="ImagePath" class="control-label">Last opp bilde</label>
                 <input class="pull-right" type="file" name="file" />
             </div>
+            <input asp-for="ClubId" type="hidden" value="@ViewData["clubEvent"]">
             <div class="form-group">
                 <input type="submit" value="Opprett" class="btn btn-default"/>
                 <a class="pull-right" asp-action="Index">Avbryt</a>

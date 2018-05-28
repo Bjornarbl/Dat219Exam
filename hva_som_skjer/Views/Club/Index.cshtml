@@ -92,22 +92,12 @@
             </div>
         </div>
     </div>
-    @if(User.Identity.IsAuthenticated)
-    {
+
         <div class="team-grid">
             <div class="container">
                 <div class="intro">
-                    <h3 class="text-center"><a href="Club/CreateClub"> Oppret din egen klub </a></h3>
-
+                    <h3 class="text-center"><a href="Club/CreateClub">Opprett din egen klubb! </a></h3>
+                    <br>
                 </div>
             </div>
         </div>
-    }
-
-<script>
-function myFunction() {
-  window.location.href="@Url.Action("Clubs")";;
-}
-</script>
-
-

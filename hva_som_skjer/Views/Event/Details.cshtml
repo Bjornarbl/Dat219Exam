@@ -1,4 +1,5 @@
 @model hva_som_skjer.Models.Event
+@inject UserManager<ApplicationUser> um
 
 @{
     ViewData["Title"] = @Html.DisplayFor(model => model.Title);
@@ -14,8 +15,8 @@
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><a asp-action="Index">Tilbake til Arrangementer</a></li>
-                <li class="list-group-item"><a asp-action="Index">Se flere arrangementer fra denne arrangøren</a></li>
-                <li class="list-group-item"><a asp-action="Index">Gå til Klubben</a></li>
+                <li class="list-group-item"><a asp-action="Index" asp-route-key="@Model.ClubId">Se flere arrangementer fra denne arrangøren</a></li>
+                <li class="list-group-item"><a asp-controller="Club" asp-action="Club" asp-route-id="@Model.Club.Id">Gå til Klubben</a></li>
             </ul>
         </div>
 
@@ -29,9 +30,9 @@
 
                 <li class="list-group-item"><a asp-action="Edit" asp-route-id="@Model.Id">Rediger</a></li>
                 <li class="list-group-item"><a asp-action="Delete" asp-route-id="@Model.Id">Slett </a></li>
-                <li class="list-group-item">Denne skal kunne være synlig for klubb Administorer</li>
             </ul>
         </div>
+
     </div>
 
     <div class="col-md-6">
@@ -39,7 +40,7 @@
             <img class="card-img-top" src="@Model.ImagePath" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">@Html.DisplayFor(model => model.Title)</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Arrangør: ARRANGØRNAVN</h6>
+                <h6 class="card-subtitle mb-2 text-muted">Arrangør: @Model.Club.Name</h6>
                 <hr />
                 <p class="card-text"><i class="fa fa-clock-o" aria-hidden="true"></i> </i> @Model.StartDate.ToLongDateString(), kl.  @Html.DisplayFor(model => model.StartTime) til @Html.DisplayFor(model => model.EndTime)</p>
                 <p class="card-text"><i class="fa fa-map-marker" aria-hidden="true"></i> @Html.DisplayFor(model => model.Location)</a>
@@ -59,6 +60,5 @@
             </div>
         </div>
     </div>   
-
     <div class="col-md-3"></div> 
  </div>
