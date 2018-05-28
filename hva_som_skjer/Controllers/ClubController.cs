@@ -46,6 +46,23 @@ namespace hva_som_skjer.Controllers
             return View(club);
         }
 
+        public async Task<IActionResult> Search(string name) 
+        {
+            if (name == null)
+            {
+                return NotFound();
+            }
+
+            var clubs = _db.Clubs.Where(s => s.Name.ToLower().Contains(name.ToLower()) || 
+                s.Description.ToLower().Contains(name.ToLower()));
+            if (!clubs.Any())
+            {
+                return NotFound();
+            }
+
+            return View(clubs.ToList());
+        }  
+
         public async Task<IActionResult> Clubs(string category) 
         {
             if (category == null)

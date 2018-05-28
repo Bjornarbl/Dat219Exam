@@ -53,9 +53,11 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="col-lg-3">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Søk ...">
-                    </div>
+                    <form asp-controller="Club" asp-action="Search" method="GET">
+                        <div class="input-group">
+                            <input name="Name" type="text" class="form-control" placeholder="Søk ...">
+                        </div>
+                    </form>
                 </div>
                 <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="nav navbar-nav ml-auto">
@@ -127,6 +129,17 @@
     </environment>
 
     @RenderSection("Scripts", required: false)
+
+  <script>
+  var input = document.getElementById("myInput");
+  input.addEventListener("keyup", function(event) {
+      event.preventDefault();
+      if (event.keyCode === 13) {
+          window.location.href = "/{Club}/{Search}/{Name}";
+      }
+  });
+  </script>
+
 </body>
 
 </html>
