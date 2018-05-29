@@ -4,35 +4,6 @@
 }
 
 <hr />
-
-<!--
-<div class="sidenav">
-    <img class="card-img-top" src="@Model.Club.Image" alt="Card image cap">  
-    <a href="#">Kontakt</a>
-    <a asp-action="EditClub" asp-route-id="@Model.Club.Id">Rediger klubb </a>
-    <a asp-action="addNews" asp-route-id="@Model.Club.Id">Publiser nyhet </a>
-</div>
-
-
-<div class="main">
-    <div class="card mb-3">
-        <img class="card-img-top" src="@Model.Club.BannerImage" alt="Card image cap">
-        <div class="card-body">
-         
-            @if(User.Identity.IsAuthenticated)
-            {
-              <form class="form-horizontal" method="post" asp-controller="Club" asp-action="Subscribe">
-                <input type="hidden" name="clubId" value="@Model.Club.Id">
-                <button id="singlebutton" name="singlebutton" class="btn btn-inverce" style="float: right;">Abonomer</button>
-              </form>
-            }
-            <h5 class="card-title">@Html.DisplayFor(model => model.Club.Name)</h5>                      
-            <p class="card-text">@Html.DisplayFor(model => model.Club.Description)</p>
-            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-        </div>
-    </div>
-</div>
--->
 <div class="row">
     <div class="col-md-3">
         <div class="card" style="width: 18rem;">
@@ -123,7 +94,7 @@
                 </p>
             </div>
         </div>
-        <br> 
+         
          @foreach (var s in Model.NewsModel) 
         { 
           var comments = Model.CommentModel; 
