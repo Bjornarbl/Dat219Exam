@@ -36,6 +36,8 @@ namespace hva_som_skjer
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
+            services.Configure<AuthMessageSenderOptions>(Configuration);
+
             services.AddMvc();
         }
 
