@@ -73,8 +73,8 @@ namespace hva_som_skjer.Controllers
                         }
                     }
                 } 
-                var temp = relevantComments.OrderByDescending(CommentModel => CommentModel.Id);
-                vm.Comments = temp.ToList();
+                
+                vm.Comments = relevantComments;
                 vm.News = relevantNews;                
                 vm.CurrentUser = user;
                 vm.Users = await _db.Users.ToListAsync();
