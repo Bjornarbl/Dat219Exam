@@ -10,16 +10,19 @@ using hva_som_skjer.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace hva_som_skjer.Controllers
 {
     public class EventController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private ApplicationDbContext _db;
+        private readonly UserManager<ApplicationUser> _um;
 
-        public EventController(ApplicationDbContext context)
+        public EventController(ApplicationDbContext db, UserManager<ApplicationUser> um)
         {
-            _db = context;
+            _db = db;
+            _um = um;
         }
 
         // GET: Event/key?ALl
@@ -95,6 +98,15 @@ namespace hva_som_skjer.Controllers
 
             ViewData["clubEvent"] = id;
 
+            // Check if user is admin 
+            var admins = _db.Admins.Include(x => x.User).Where(m => m.ClubModel.Id == id).ToList();
+            var userName = _um.GetUserName(User);
+
+            if(!admins.Any(a => a.User.UserName == userName))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             return View();
         }
 
@@ -157,11 +169,21 @@ namespace hva_som_skjer.Controllers
             }
 
             var @event = await _db.Events.SingleOrDefaultAsync(m => m.Id == id);
-
+            
             if (@event == null)
             {
                 return NotFound();
             }
+
+            // Check if user is admin 
+            var admins = _db.Admins.Include(x => x.User).Where(m => m.ClubModel.Id == @event.ClubId).ToList();
+            var userName = _um.GetUserName(User);
+
+            if(!admins.Any(a => a.User.UserName == userName))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             return View(@event);
         }
 
@@ -243,11 +265,20 @@ namespace hva_som_skjer.Controllers
                 return NotFound();
             }
 
-            var @event = await _db.Events
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var @event = await _db.Events.SingleOrDefaultAsync(m => m.Id == id);
+
             if (@event == null)
             {
                 return NotFound();
+            }
+
+            // Check if user is admin 
+            var admins = _db.Admins.Include(x => x.User).Where(m => m.ClubModel.Id == @event.ClubId).ToList();
+            var userName = _um.GetUserName(User);
+
+            if(!admins.Any(a => a.User.UserName == userName))
+            {
+                return RedirectToAction(nameof(Index));
             }
 
             return View(@event);
