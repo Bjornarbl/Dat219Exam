@@ -46,25 +46,50 @@ namespace hva_som_skjer.Controllers
             return View(club);
         }
 
-        public async Task<IActionResult> Search(string name) 
+        public async Task<IActionResult> Search(ClubViewModel vm) 
         {
-            if (name == null)
+            if (vm == null)
             {
-                return NotFound();
+                vm = new ClubViewModel();
+                vm.Limit = 10;
             }
 
-            var clubs = _db.Clubs.Where(s => s.Name.ToLower().Contains(name.ToLower()) || 
-            s.Category.ToLower().Contains(name.ToLower()) ||
-            s.Description.ToLower().Contains(name.ToLower()) 
+            // Do not perform a search if the search is invalid
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            // Perform search, one filter at a time
+            var results = _db.Clubs.AsQueryable();
+
+            if (vm.Search != null)
+                results = results.Where(p => p.Name.ToLower().Contains(vm.Search.ToLower()) ||
+                p.Category.ToLower().Contains(vm.Search.ToLower())
+                || p.Founded.Equals(vm.Search)
+                );
             
-            );
-            if (!clubs.Any())
-            {
-                return NotFound();
-            }
+            if(vm.Type == "Category" && vm.OrderBy == "A")
+                results = results.OrderBy(p=> p.Category);
+            
+            if(vm.Type == "Category" && vm.OrderBy == "Z")
 
-            return View(clubs.ToList());
-        }  
+            if(vm.Type == "Founded" && vm.OrderBy == "A")
+                results = results.OrderBy(p=> p.Founded);
+
+            if(vm.Type == "Founded" && vm.OrderBy == "Z")
+                results = results.OrderByDescending(p => p.Founded);
+
+            if(vm.Type == "Name" && vm.OrderBy == "A")
+                results = results.OrderBy(p=> p.Name);
+
+            if(vm.Type == "Name" && vm.OrderBy == "Z") 
+                results = results.OrderByDescending(p => p.Name);
+
+            // This is what actually fetches the data
+            vm.Results = results.Take(vm.Limit).ToList();
+            
+            // Send result to view
+            return View(vm);
+        }
 
         public async Task<IActionResult> Clubs(string category) 
         {
