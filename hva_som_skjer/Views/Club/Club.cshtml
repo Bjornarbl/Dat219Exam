@@ -120,8 +120,9 @@
     @foreach (var s in Model.NewsModel) 
 		{ 
 			var comments = Model.CommentModel; 
-			var user = Model.User; 
-			var vm = new CommentViewModel(s,comments,user); 
+			var users = Model.Users; 
+      var currenUser = Model.CurrentUser;
+			var vm = new CommentViewModel(s,comments,users,currenUser); 
 			if (s.clubId == Model.Club.Id) 
 			{ 
 				Html.RenderPartial("_ClubNewsPartial", vm); 

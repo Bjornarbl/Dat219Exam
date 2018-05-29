@@ -73,10 +73,11 @@ namespace hva_som_skjer.Controllers
                         }
                     }
                 } 
-
-                vm.Comments = relevantComments;
+                var temp = relevantComments.OrderByDescending(CommentModel => CommentModel.Id);
+                vm.Comments = temp.ToList();
                 vm.News = relevantNews;                
-                vm.User = user;
+                vm.CurrentUser = user;
+                vm.Users = await _db.Users.ToListAsync();
                 
             }
             return View(vm);    

@@ -52,7 +52,8 @@ namespace hva_som_skjer.Controllers
 
             var user = await _um.GetUserAsync(User);
             vm.Club = clubtemp;
-            vm.User = user;
+            vm.Users = _db.Users.ToList();
+            vm.CurrentUser = user;
             vm.isAdmin = false;
             if(User.Identity.IsAuthenticated && !(user == null))
             {
@@ -310,8 +311,7 @@ namespace hva_som_skjer.Controllers
             var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == news.clubId);
 
             var user = await _um.GetUserAsync(User);
-            comment.Author = user.UserName;
-            comment.AuthorPicture = user.ProfilePicture;
+            comment.Author = user;
             comment.news = news;
         
 

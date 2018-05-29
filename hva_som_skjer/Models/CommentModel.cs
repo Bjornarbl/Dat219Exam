@@ -10,11 +10,11 @@ namespace hva_som_skjer.Models
             Posted = DateTime.UtcNow;
         }
 
-        public CommentModel(string content, string author, string authorPicture)
+        public CommentModel(string content, ApplicationUser author)
         {
             this.Content = content;
             this.Posted = DateTime.UtcNow;
-            this.AuthorPicture = authorPicture;
+            this.Author = author;
 
         }
 
@@ -31,7 +31,6 @@ namespace hva_som_skjer.Models
         public NewsModel news {get;set;}
         public int NewsId{get;set;} 
 
-        public string Author{get;set;}
-        public string AuthorPicture{get;set;}
+        public ApplicationUser Author{get; set;}
     }
 }

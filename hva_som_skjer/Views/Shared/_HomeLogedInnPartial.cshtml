@@ -9,7 +9,7 @@
         
         @foreach(var i in Model.News){
 
-            var commentModel = new CommentViewModel(i,Model.Comments,Model.User);
+            var commentModel = new CommentViewModel(i,Model.Comments,Model.Users,Model.CurrentUser);
             Html.RenderPartial("_SubscriptionPartial", commentModel);    
         }
         

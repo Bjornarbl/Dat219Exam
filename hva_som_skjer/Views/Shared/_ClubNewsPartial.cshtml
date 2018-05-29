@@ -22,7 +22,7 @@
     		<div class="comments">
 				<div class="comment-wrap">
 					<div class="photo">
-						<img class="avatar" src="@Model.User.ProfilePicture" alt="Card image cap">
+						<img class="avatar" src="@Model.CurrentUser.ProfilePicture" alt="Card image cap">
 					</div>
 					<div class="comment-block">
 						<form method="post" enctype="ultipart/form-data" asp-controller="Club" asp-action="AddComment">
@@ -45,7 +45,7 @@
 					<div class="col-md-2"></div>
         			<div class="col-md-1">
             			<div class="thumbnail">
-                			<img class="img-fluid img-thumbnail user-photo" src="@Html.DisplayFor(model => s.AuthorPicture)">
+                			<img class="img-fluid img-thumbnail user-photo" src="@Html.DisplayFor(model => s.Author.ProfilePicture)">
             			</div>
         			</div>
 

@@ -15,7 +15,7 @@
     <div class="comments">
 		<div class="comment-wrap">
 				<div class="photo">
-						 <img class="avatar" src="@Model.User.ProfilePicture" alt="Card image cap">
+						 <img class="avatar" src="@Model.CurrentUser.ProfilePicture" alt="Card image cap">
 				</div>
 				<div class="comment-block">
 						<form method="post" enctype="ultipart/form-data" asp-controller="Club" asp-action="AddComment">
@@ -33,7 +33,7 @@
 			{
 			<div class="comment-wrap">
 				<div class="photo">
-						<img class="avatar" src="@Html.DisplayFor(model => s.AuthorPicture)" alt="Card image cap">
+						<img class="avatar" src="@Html.DisplayFor(model => s.Author.ProfilePicture)" alt="Card image cap">
 				</div>
 				<div class="comment-block">
 						<p class="comment-text">@Html.DisplayFor(model => s.Content)</p>
