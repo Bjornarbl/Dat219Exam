@@ -127,7 +127,31 @@ namespace hva_som_skjer.Controllers
                 return NotFound();
             }
 
-            return View(club);
+            if(User.Identity.IsAuthenticated )
+            {
+                var user = await _um.GetUserAsync(User);
+                if(!(user == null))
+                {
+                    bool isAdmin = false;
+                    var admins = await _db.Admins.ToListAsync();
+                    var relevantAdmins = admins.Where(Admin => Admin.User == user);             
+                    foreach(var s in relevantAdmins)
+                    {
+                        if(s.ClubModel == club)
+                        {
+                            isAdmin = true;
+                        }
+                    }
+                    if(isAdmin)
+                    {
+                        return View(club);
+                    }else
+                    {
+                        return RedirectToAction("Club",new{ID = club.Id});
+                    }
+                }    
+            }
+            return RedirectToAction("Club",new{ID = club.Id});
         }
         [Authorize]
         public async Task<IActionResult> AddNews(int? id)
@@ -144,7 +168,31 @@ namespace hva_som_skjer.Controllers
                 return NotFound();
             }
 
-            return View(club);
+            if(User.Identity.IsAuthenticated )
+            {
+                var user = await _um.GetUserAsync(User);
+                if(!(user == null))
+                {
+                    bool isAdmin = false;
+                    var admins = await _db.Admins.ToListAsync();
+                    var relevantAdmins = admins.Where(Admin => Admin.User == user);             
+                    foreach(var s in relevantAdmins)
+                    {
+                        if(s.ClubModel == club)
+                        {
+                            isAdmin = true;
+                        }
+                    }
+                    if(isAdmin)
+                    {
+                        return View(club);
+                    }else
+                    {
+                        return RedirectToAction("Club",new{ID = club.Id});
+                    }
+                }    
+            }
+            return RedirectToAction("Club",new{ID = club.Id});
         }
 
         [HttpPost]
