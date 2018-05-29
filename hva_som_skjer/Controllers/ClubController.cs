@@ -367,7 +367,7 @@ namespace hva_som_skjer.Controllers
                    _db.SaveChanges();
                 }
             }
-            return RedirectToAction("Club",new{ID = club.Id});
+            return RedirectToAction("Club",new{ID = clubId});
         }
 
         [HttpPost]

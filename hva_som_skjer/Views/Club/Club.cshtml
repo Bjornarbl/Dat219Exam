@@ -46,6 +46,7 @@
                 </li>
           </ul>
         </div>
+       
 
         <br>
 
@@ -90,7 +91,7 @@
           
           }
         }
-      </div>
+    </div>  
        
 
     <div class="col-md-6" style="width: 100px;">
@@ -122,49 +123,22 @@
                 </p>
             </div>
         </div>
-    
-    <br>
-    <br>
-
-    @foreach (var s in Model.NewsModel) 
-		{ 
-			var comments = Model.CommentModel; 
-			var users = Model.Users; 
-      var currenUser = Model.CurrentUser;
-			var vm = new CommentViewModel(s,comments,users,currenUser); 
-			if (s.clubId == Model.Club.Id) 
-			{ 
-				Html.RenderPartial("_ClubNewsPartial", vm); 
-			} 
-		}
+        <br> 
+         @foreach (var s in Model.NewsModel) 
+        { 
+          var comments = Model.CommentModel; 
+          var users = Model.Users; 
+          var currenUser = Model.CurrentUser;
+          var vm = new CommentViewModel(s,comments,users,currenUser); 
+          if (s.clubId == Model.Club.Id) 
+          { 
+            Html.RenderPartial("_ClubNewsPartial", vm); 
+          } 
+        }  
   </div>
 </div>
 
 <style>
-  .sidenav {
-    height: 100%;
-    width: 200px;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: rgb(255, 255, 255);
-    overflow-x: hidden;
-    padding-top: 20px;
-  }
-
-  .sidenav a {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #1485ee;
-    display: block;
-  }
-
-  .sidenav a:hover {
-    color: #000000;
-  }
-
   .main {
     margin-left: 200px;
     /* Same as the width of the sidenav */
@@ -193,6 +167,13 @@
   .photo .avatar {
     height: 2.25rem;
     width: 2.25rem;
+    border-radius: 50%;
+    background-size: contain;
+  }
+
+  .avatar {
+    height: 3rem;
+    width: 3rem;
     border-radius: 50%;
     background-size: contain;
   }
