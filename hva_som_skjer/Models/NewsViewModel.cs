@@ -10,5 +10,6 @@ namespace hva_som_skjer.Models
         public List<ApplicationUser> Users{get; set;}
         public ApplicationUser CurrentUser{get;set;}
         public bool isAdmin{get; set;}
+        public bool isFollowing{get; set;}
     }
 }

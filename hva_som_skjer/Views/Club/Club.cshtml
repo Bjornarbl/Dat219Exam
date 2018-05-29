@@ -99,10 +99,19 @@
             <div class="card-body">
                 @if(User.Identity.IsAuthenticated)
                 {
-                  <form class="form-horizontal" method="post" asp-controller="Club" asp-action="Subscribe">
+                  if(Model.isFollowing)
+                  {
+                    <form class="form-horizontal" method="post" asp-controller="Club" asp-action="Unsubscribe">
+                    <input type="hidden" name="clubId" value="@Model.Club.Id">
+                    <button id="singlebutton" name="singlebutton" class="btn btn-inverce" style="float: right;">Slutt og følge</button>
+                  </form>
+                  }else{
+                    <form class="form-horizontal" method="post" asp-controller="Club" asp-action="Subscribe">
                     <input type="hidden" name="clubId" value="@Model.Club.Id">
                     <button id="singlebutton" name="singlebutton" class="btn btn-inverce" style="float: right;">Følg</button>
-                  </form>
+                    </form>
+                  }
+                  
                 }
                 <h5 class="card-title">@Html.DisplayFor(model => model.Club.Name)</h5>
                 <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(model => model.Club.Category)</h6>

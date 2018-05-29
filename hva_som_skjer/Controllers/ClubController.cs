@@ -67,6 +67,18 @@ namespace hva_som_skjer.Controllers
                         vm.isAdmin = true;
                     }
                 }
+
+                var subscriptions = await _db.Subscriptions.ToListAsync();
+                var relevantSub = subscriptions.Where(Subscription => Subscription.user == user);
+
+                foreach(var s in relevantSub)
+                {
+                    if(s.club == clubtemp)
+                    {
+                        vm.isFollowing = true;
+                    }
+                }
+
             }
             return View(vm);
         }
@@ -337,6 +349,26 @@ namespace hva_som_skjer.Controllers
             return RedirectToAction("Club",new{ID = club.Id});
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Unsubscribe(int clubId)
+        {
+            var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == clubId);
+            var user = await _um.GetUserAsync(User);
+
+            var subscriptions = await _db.Subscriptions.ToListAsync();
+            var relevantSub = subscriptions.Where(Subscription => Subscription.user == user);
+
+            foreach(var s in relevantSub)
+            {
+                if(s.club == club)
+                {
+                   _db.Subscriptions.Attach(s);
+                   _db.Subscriptions.Remove(s);
+                   _db.SaveChanges();
+                }
+            }
+            return RedirectToAction("Club",new{ID = club.Id});
+        }
 
         [HttpPost]
         public async Task<IActionResult> Generate(ClubModel club, IFormFile logo, IFormFile banner)
