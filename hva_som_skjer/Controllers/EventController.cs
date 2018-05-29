@@ -15,7 +15,7 @@ namespace hva_som_skjer.Controllers
 {
     public class EventController : Controller
     {
-        private ApplicationDbContext _db;
+        private readonly ApplicationDbContext _db;
 
         public EventController(ApplicationDbContext context)
         {
@@ -27,12 +27,12 @@ namespace hva_som_skjer.Controllers
         {
             if (key != null)
             {
-                var evts =  _db.Events.Where(s => s.ClubId == key).Include(x => x.Club).ToList();
+                var evts = await _db.Events.Where(s => s.ClubId == key).ToListAsync();                
                 return View(evts.OrderBy(x => x.StartDate));
             }
    
-            var events = _db.Events.ToList();
-            
+            var events = await _db.Events.ToListAsync();  
+                      
             return View(events.OrderBy(x => x.StartDate));
         }
 
@@ -81,7 +81,7 @@ namespace hva_som_skjer.Controllers
             vm.Club = club;
             vm.Admins = admins;
 
-            return View(vm);
+            return View(vm);        
         }
 
         // GET: Event/Create/1
@@ -103,7 +103,7 @@ namespace hva_som_skjer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Content,StartDate,StartTime,EndTime,Location,ClubId")] Event @event, IFormFile file)
+        public async Task<IActionResult> Create([Bind("Title,ClubId,Content,StartDate,StartTime,EndTime,Location")] Event @event, IFormFile file)
         {
             if (ModelState.IsValid)
             {
@@ -157,6 +157,7 @@ namespace hva_som_skjer.Controllers
             }
 
             var @event = await _db.Events.SingleOrDefaultAsync(m => m.Id == id);
+
             if (@event == null)
             {
                 return NotFound();
@@ -182,6 +183,7 @@ namespace hva_som_skjer.Controllers
                 {
                     string filename = string.Format(@"{0}.png", Guid.NewGuid());
                     string filePath = "/images/events/"+filename;
+                    string oldpath = @event.ImagePath;
 
                     var localPath = Directory.GetCurrentDirectory();
                     localPath += "/wwwroot/" + filePath;
@@ -195,8 +197,11 @@ namespace hva_som_skjer.Controllers
                     }
                     @event.ImagePath = filePath;
 
-                    // TODO: Delete old image
-                    // TODO: Virker ikke. File er alltid null
+                    if(oldpath != "/images/events/EventDefault.PNG")
+                    {
+                    string oldpicture = localPath + "/wwwroot/" + oldpath;
+                    System.IO.File.Delete(oldpicture);
+                    }
                 }
 
                 var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == @event.ClubId);
@@ -224,7 +229,7 @@ namespace hva_som_skjer.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { Id = @event.Id });
             }
             return View(@event);
         }
