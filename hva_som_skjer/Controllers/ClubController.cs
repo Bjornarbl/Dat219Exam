@@ -50,9 +50,23 @@ namespace hva_som_skjer.Controllers
             vm.NewsModel = _db.News.OrderByDescending(NewsModel => NewsModel.Id).ToList();
             vm.CommentModel =_db.Comments.ToList();
 
+            var user = await _um.GetUserAsync(User);
             vm.Club = clubtemp;
-            vm.User = await _um.GetUserAsync(User);
-
+            vm.User = user;
+            vm.isAdmin = false;
+            if(User.Identity.IsAuthenticated && !(user == null))
+            {
+                var admins = await _db.Admins.ToListAsync();
+                var relevantAdmins = admins.Where(Admin => Admin.User == user);
+                
+                foreach(var s in relevantAdmins)
+                {
+                    if(s.ClubModel == clubtemp)
+                    {
+                        vm.isAdmin = true;
+                    }
+                }
+            }
             return View(vm);
         }
 
@@ -292,9 +306,6 @@ namespace hva_som_skjer.Controllers
             
             ClubAdmin.ClubModel = club;
             ClubAdmin.User = user;
-
-            //_db.Clubs.Update(club);
-            //_db.Admins.Update(ClubAdmin);
             _db.SaveChanges();
 
             return RedirectToAction("Club",new{ID = club.Id});

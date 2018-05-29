@@ -65,27 +65,33 @@
 
 
         <br>
-
-        <div class="card" style="width: 18rem;">
-            <div class="card-header">
+        @{
+          if(Model.isAdmin)
+          {
+            <div class="card" style="width: 18rem;">
+              <div class="card-header">
                 <i class="fa fa-wrench" aria-hidden="true"></i> Administrer
-            </div>
-            <ul class="list-group list-group-flush">
+              </div>
+              <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                    <a asp-action="addNews" asp-route-id="@Model.Club.Id">Publiser Nyhet</a>
+                  <a asp-action="addNews" asp-route-id="@Model.Club.Id">Publiser Nyhet</a>
                 </li>
                 <li class="list-group-item">
                   <a asp-controller="Event" asp-action="Create" asp-route-id="@Model.Club.Id">Opprett Arrangement</a>
-                  </li>
+                </li>
                 <li class="list-group-item">
                     <a asp-action="EditClub" asp-route-id="@Model.Club.Id">Rediger klubb</a>
                 </li>
                 <li class="list-group-item">
                     <a asp-action="Delete" asp-route-id="">Slett</a>
                 </li>
-            </ul>
-        </div>
-    </div>
+              </ul>
+            </div>
+          
+          }
+        }
+      </div>
+       
 
     <div class="col-md-6" style="width: 100px;">
         <div class="card">
