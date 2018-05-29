@@ -71,6 +71,7 @@ namespace hva_som_skjer.Controllers
                 results = results.OrderBy(p=> p.Category);
             
             if(vm.Type == "Category" && vm.OrderBy == "Z")
+                results = results.OrderByDescending(p => p.Category);
 
             if(vm.Type == "Founded" && vm.OrderBy == "A")
                 results = results.OrderBy(p=> p.Founded);
