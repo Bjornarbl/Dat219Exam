@@ -339,17 +339,56 @@ namespace hva_som_skjer.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Generate(ClubModel club)
+        public async Task<IActionResult> Generate(ClubModel club, IFormFile logo, IFormFile banner)
         {
             Admin ClubAdmin = new Admin();
 
             club.Admins.Add(ClubAdmin);
             _db.Clubs.Add(club);
 
+            if(logo == null)
+            {
+                club.Image = "../../images/LogoPictures/tempLogo.png";
+            }else
+            {
+                try
+                {
+                    string filename = string.Format(@"{0}.png", Guid.NewGuid());
+                    club.Image = "../../images/LogoPictures/"+filename;
+                    _db.SaveChanges();
 
-            club.Image = "../../images/LogoPictures/tempLogo.png";
-            club.BannerImage = "../../images/BannerPictures/defaultBanner.png";
+                    var localPath = Directory.GetCurrentDirectory();
+                    string filePath = "\\wwwroot\\images\\LogoPictures\\"+filename;
+                    string wholePath = localPath+filePath;
+                    using (var stream = new FileStream(wholePath, FileMode.Create))
+                    {
+                        await logo.CopyToAsync(stream);
+                    }
+                
+                }catch{ club.Image = "../../images/LogoPictures/tempLogo.png";}  
+            }
+            if(banner == null)
+            {
+                club.BannerImage = "../../images/BannerPictures/defaultBanner.png";
+            }else
+            {
+                try
+                {
+                    string filename = string.Format(@"{0}.png", Guid.NewGuid());
+                    club.BannerImage = "../../images/BannerPictures/"+filename;
+                    _db.SaveChanges();
 
+                    var localPath = Directory.GetCurrentDirectory();
+                    string filePath = "\\wwwroot\\images\\BannerPictures\\"+filename;
+                    string wholePath = localPath+filePath;
+                    using (var stream = new FileStream(wholePath, FileMode.Create))
+                    {
+                        await banner.CopyToAsync(stream);
+                    }
+                
+                }catch{ club.BannerImage = "../../images/BannerPictures/defaultBanner.png";}
+            }
+            
             var user = await _um.GetUserAsync(User);
             
             ClubAdmin.ClubModel = club;
