@@ -85,6 +85,9 @@ namespace hva_som_skjer.Controllers
             if(vm.Type == "Name" && vm.OrderBy == "Z") 
                 results = results.OrderByDescending(p => p.Name);
 
+            if(vm.Limit <= 0) {
+                vm.Limit = 1;
+            }
             // This is what actually fetches the data
             vm.Results = results.Take(vm.Limit).ToList();
             
