@@ -1,8 +1,19 @@
-@model hva_som_skjer.Models.Event
-@inject UserManager<ApplicationUser> um
+@model hva_som_skjer.Models.EventViewModel
+@inject UserManager<ApplicationUser> userManager
+@inject SignInManager<ApplicationUser> signInManager
 
 @{
-    ViewData["Title"] = @Html.DisplayFor(model => model.Title);
+    ViewData["Title"] = @Html.DisplayFor(model => model.Event.Title);
+}
+
+@{
+    ApplicationUser currentUser = null;
+
+    if (signInManager.IsSignedIn(User))
+    {
+        currentUser = await userManager.GetUserAsync(User);
+    }
+        
 }
 
 <hr />
@@ -15,37 +26,41 @@
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><a asp-action="Index">Tilbake til Arrangementer</a></li>
-                <li class="list-group-item"><a asp-action="Index" asp-route-key="@Model.ClubId">Se flere arrangementer fra denne arrangøren</a></li>
+                <li class="list-group-item"><a asp-action="Index" asp-route-key="@Model.Club.Id">Se flere arrangementer fra denne arrangøren</a></li>
                 <li class="list-group-item"><a asp-controller="Club" asp-action="Club" asp-route-id="@Model.Club.Id">Gå til Klubben</a></li>
             </ul>
         </div>
 
         <br>
 
-        <div class="card" style="width: 18rem;">
-            <div class="card-header">
-                <i class="fa fa-wrench" aria-hidden="true"></i> Administrer
-            </div>
-            <ul class="list-group list-group-flush">
+        <!-- Model.Admins.First(a => a.User == @currentUser) != null -->
 
-                <li class="list-group-item"><a asp-action="Edit" asp-route-id="@Model.Id">Rediger</a></li>
-                <li class="list-group-item"><a asp-action="Delete" asp-route-id="@Model.Id">Slett </a></li>
-            </ul>
-        </div>
+        @if (@Model.Admins.Any(a => a.User == @currentUser))
+        {
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    <i class="fa fa-wrench" aria-hidden="true"></i> Administrer
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><a asp-action="Edit" asp-route-id="@Model.Event.Id">Rediger</a></li>
+                    <li class="list-group-item"><a asp-action="Delete" asp-route-id="@Model.Event.Id">Slett </a></li>
+                </ul>
+            </div>
+        }
 
     </div>
 
     <div class="col-md-6">
         <div class="card event-card">
-            <img class="card-img-top" src="@Model.ImagePath" alt="Card image cap">
+            <img class="card-img-top" src="@Model.Event.ImagePath" alt="Card image cap">
             <div class="card-body">
-                <h5 class="card-title">@Html.DisplayFor(model => model.Title)</h5>
+                <h5 class="card-title">@Html.DisplayFor(model => model.Event.Title)</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Arrangør: @Model.Club.Name</h6>
                 <hr />
-                <p class="card-text"><i class="fa fa-clock-o" aria-hidden="true"></i> </i> @Model.StartDate.ToLongDateString(), kl.  @Html.DisplayFor(model => model.StartTime) til @Html.DisplayFor(model => model.EndTime)</p>
-                <p class="card-text"><i class="fa fa-map-marker" aria-hidden="true"></i> @Html.DisplayFor(model => model.Location)</a>
+                <p class="card-text"><i class="fa fa-clock-o" aria-hidden="true"></i> </i> @Model.Event.StartDate.ToLongDateString(), kl.  @Html.DisplayFor(model => model.Event.StartTime) til @Html.DisplayFor(model => model.Event.EndTime)</p>
+                <p class="card-text"><i class="fa fa-map-marker" aria-hidden="true"></i> @Html.DisplayFor(model => model.Event.Location)</a>
                 <hr />
-                <p class="card-text"><small class="text-muted">Opprettet @Html.DisplayFor(model => model.Created)</small></p>
+                <p class="card-text"><small class="text-muted">Opprettet @Html.DisplayFor(model => model.Event.Created)</small></p>
             </div>
         </div>
 
@@ -56,7 +71,7 @@
                 Detaljer
             </div>
             <div class="card-body">
-                <p class="card-text">@Html.DisplayFor(model => model.Content)</p>
+                <p class="card-text">@Html.DisplayFor(model => model.Event.Content)</p>
             </div>
         </div>
     </div>   

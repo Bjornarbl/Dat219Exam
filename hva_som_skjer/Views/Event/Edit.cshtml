@@ -47,9 +47,10 @@
                 <input class="pull-right" type="file" name="file" />
             </div>
             <input type="hidden" asp-for="ImagePath">
+            <input type="hidden" asp-for="ClubId">
             <div class="form-group">
                 <input type="submit" value="Lagre" class="btn btn-default" />
-                <a class="pull-right" asp-action="Index">Avbryt</a>
+                <a class="pull-right" asp-action="Details" asp-route-id="@Model.Id">Avbryt</a>
             </div>
         </form>
     </div>

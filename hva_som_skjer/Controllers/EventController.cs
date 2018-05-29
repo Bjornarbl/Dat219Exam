@@ -15,7 +15,7 @@ namespace hva_som_skjer.Controllers
 {
     public class EventController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private ApplicationDbContext _db;
 
         public EventController(ApplicationDbContext context)
         {
@@ -27,11 +27,12 @@ namespace hva_som_skjer.Controllers
         {
             if (key != null)
             {
-                var evts = await _db.Events.Where(s => s.ClubId == key).Include(x => x.Club).ThenInclude(c => c.Admins).ToListAsync();
+                var evts =  _db.Events.Where(s => s.ClubId == key).Include(x => x.Club).ToList();
                 return View(evts.OrderBy(x => x.StartDate));
             }
    
-            var events = await _db.Events.Include(x => x.Club).ThenInclude(c => c.Admins).ToListAsync();
+            var events = _db.Events.ToList();
+            
             return View(events.OrderBy(x => x.StartDate));
         }
 
@@ -57,9 +58,30 @@ namespace hva_som_skjer.Controllers
             {
                 return NotFound();
             }
-            
 
-            return View(@event);
+            // The club that created the event
+            var club = _db.Clubs.SingleOrDefault(c => c.Id == @event.ClubId);
+
+            if (club == null)
+            {
+                return NotFound();   
+            }
+
+            // List of all Admins in club
+            var admins = _db.Admins.Where(a => a.ClubModel.Id == club.Id).Include(x => x.User).ToList();
+
+            if (!admins.Any())
+            {
+                return NotFound();
+            }
+
+            var vm = new EventViewModel();
+
+            vm.Event = @event;
+            vm.Club = club;
+            vm.Admins = admins;
+
+            return View(vm);
         }
 
         // GET: Event/Create/1
@@ -81,7 +103,7 @@ namespace hva_som_skjer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,StartDate,StartTime,EndTime,Location,ClubId")] Event @event, IFormFile file)
+        public async Task<IActionResult> Create([Bind("Title,Content,StartDate,StartTime,EndTime,Location,ClubId")] Event @event, IFormFile file)
         {
             if (ModelState.IsValid)
             {
@@ -120,9 +142,9 @@ namespace hva_som_skjer.Controllers
                 _db.Add(@event);
             
                 await _db.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), @event);
+                return RedirectToAction(nameof(Details), new { Id = @event.Id });
             }
-            return View(@event);
+            return View();
         }
 
         // GET: Event/Edit/5
@@ -147,7 +169,7 @@ namespace hva_som_skjer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,StartDate,StartTime,EndTime,Location,ImagePath")] Event @event, IFormFile file)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ClubId,Title,Content,StartDate,StartTime,EndTime,Location,ImagePath")] Event @event, IFormFile file)
         {
             if (id != @event.Id)
             {
@@ -176,6 +198,15 @@ namespace hva_som_skjer.Controllers
                     // TODO: Delete old image
                     // TODO: Virker ikke. File er alltid null
                 }
+
+                var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == @event.ClubId);
+
+                if (club == null)
+                {
+                    return NotFound();
+                }
+                
+                @event.Club = club;
 
                 try
                 {
