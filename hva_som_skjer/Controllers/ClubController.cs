@@ -359,7 +359,23 @@ namespace hva_som_skjer.Controllers
             return RedirectToAction("Club",new{ID = club.Id});
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddAdmin(string Name, int Id)
+        {
+            var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == Id);
+            var user = await _db.Users.ToListAsync();
+            var selectedUser = user.Where(ApplicationUser => ApplicationUser.UserName == Name);
+            if(selectedUser != null)
+            {
+                Admin admin = new Admin();
+                admin.User = selectedUser.FirstOrDefault();
+                admin.ClubModel = club;
 
+                _db.Add(admin);
+                _db.SaveChanges();
+            }
+            return RedirectToAction("Club",new{ID = club.Id});
+        }
 
         public IActionResult Error()
         {
