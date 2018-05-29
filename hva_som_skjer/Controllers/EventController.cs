@@ -290,6 +290,16 @@ namespace hva_som_skjer.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var @event = await _db.Events.SingleOrDefaultAsync(m => m.Id == id);
+            
+            var oldpath = @event.ImagePath;
+            var localPath = Directory.GetCurrentDirectory();
+            string oldpicture = localPath + "/wwwroot/" + oldpath;
+
+            if(oldpath != "/images/events/EventDefault.PNG")
+            {
+                System.IO.File.Delete(oldpicture);
+            }
+
             _db.Events.Remove(@event);
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
