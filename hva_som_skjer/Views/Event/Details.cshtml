@@ -52,9 +52,30 @@
         <div class="card event-card">
             <img class="card-img-top" src="@Model.Event.ImagePath" alt="Card image cap">
             <div class="card-body">
+                <div class="pull-right">
+                        @if(User.Identity.IsAuthenticated)
+                        {
+                            @if (Model.Attending)
+                            {
+                                <form class="form-horizontal" method="post" asp-controller="Event" asp-action="NotGoing">
+                                    <input type="hidden" name="eventId" value="@Model.Event.Id">
+                                    <button id="singlebutton" name="singlebutton" class="btn btn-primary" style="float: right;"><i class="fa fa-check" aria-hidden="true"></i> Skal</button>
+                                </form>                            
+                            }else{
+                                <form class="form-horizontal" method="post" asp-controller="Event" asp-action="Going">
+                                    <input type="hidden" name="eventId" value="@Model.Event.Id">
+                                    <button id="singlebutton" name="singlebutton" class="btn" style="float: right;"><i class="fa fa-check" aria-hidden="true"></i> Delta</button>
+                                </form>                            
+                            }
+                        }
+                </div>
                 <h5 class="card-title">@Html.DisplayFor(model => model.Event.Title)</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Arrangør: @Model.Club.Name</h6>
                 <hr />
+                @if (Model.numAttendees > 0)
+                {
+                    <p class="card-text"><i class="fa fa-users" aria-hidden="true"></i> @Model.numAttendees skal dit</p>
+                }
                 <p class="card-text"><i class="fa fa-clock-o" aria-hidden="true"></i> </i> @Model.Event.StartDate.ToLongDateString(), kl.  @Html.DisplayFor(model => model.Event.StartTime) til @Html.DisplayFor(model => model.Event.EndTime)</p>
                 <p class="card-text"><i class="fa fa-map-marker" aria-hidden="true"></i> @Html.DisplayFor(model => model.Event.Location)</a>
                 <hr />
@@ -75,3 +96,4 @@
     </div>   
     <div class="col-md-3"></div> 
  </div>
+

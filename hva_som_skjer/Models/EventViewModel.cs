@@ -9,5 +9,9 @@ namespace hva_som_skjer.Models
         public ClubModel Club{ get; set; }
 
         public List<Admin> Admins { get; set; }
+
+        public bool Attending { get; set; }
+
+        public int numAttendees { get; set; }
     }
 }

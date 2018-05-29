@@ -42,7 +42,17 @@ namespace hva_som_skjer.Controllers
         // GET: Event
         public async Task<IActionResult> Calendar()
         {
-            var events = await _db.Events.ToListAsync();
+            var events = new List<Event>();
+
+            var userName = _um.GetUserName(User);
+
+            // All deltagelse for brukeren
+            var userEvents = await _db.Attendees.Include(x => x.Event).Where(m => m.User.UserName == userName).ToArrayAsync();
+
+            foreach (var m in userEvents)
+            {
+                events.Add(m.Event);
+            }
 
             return View(events.OrderBy(x => x.StartDate));
         }
@@ -80,9 +90,22 @@ namespace hva_som_skjer.Controllers
 
             var vm = new EventViewModel();
 
+
+            var userName = _um.GetUserName(User);
+            var eventAttendes = _db.Attendees.Include(x => x.User).Where(m => m.EventId == @event.Id);
+            
+            foreach(var a in eventAttendes)
+            {
+                if(a.User.UserName == userName)
+                {
+                    vm.Attending = true;
+                }
+            }
+
             vm.Event = @event;
             vm.Club = club;
             vm.Admins = admins;
+            vm.numAttendees = eventAttendes.Count();
 
             return View(vm);        
         }
@@ -303,6 +326,45 @@ namespace hva_som_skjer.Controllers
             _db.Events.Remove(@event);
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Going(int eventId)
+        {
+            var @event = await _db.Events.SingleOrDefaultAsync(m => m.Id == eventId);
+            var user = await _um.GetUserAsync(User);
+
+            var attendee = new Attendee();
+            attendee.Event = @event;
+            attendee.EventId = eventId;
+            attendee.User = user;
+
+            _db.Attendees.Add(attendee);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Details", new{ID = eventId});
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NotGoing(int eventId)
+        {
+            var @event = await _db.Events.SingleOrDefaultAsync(m => m.Id == eventId);
+            var user = await _um.GetUserAsync(User);
+
+            var attendees = await _db.Attendees.ToListAsync();
+            var eventAttendees = attendees.Where(m => m.EventId == @event.Id);
+
+            foreach (var a in eventAttendees)
+            {
+                if (a.User.UserName == user.UserName)
+                {
+                   _db.Attendees.Attach(a);
+                   _db.Attendees.Remove(a);
+                   _db.SaveChanges();
+                }
+            }
+
+            return RedirectToAction("Details", new{ID = eventId});
         }
 
         private bool EventExists(int id)
