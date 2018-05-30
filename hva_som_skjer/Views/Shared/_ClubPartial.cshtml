@@ -2,17 +2,6 @@
 
 @{var imagePath = @Model.Image; }
 
-
-
-<!-- 
-    Har endre src path til bilde for å få inn random bilder fra robohash.
-
-    Endre src til:
-    src="/@Url.Content(@imagePath)" 
-
-    for at lokale bilder skal funke igjen.
--->
-
 <div class="card w-50 container">
     <img asp-action="Club" asp-route-id="@Model.Id" class="card-img-left" src="@Model.Image">
     <div class="card-body">

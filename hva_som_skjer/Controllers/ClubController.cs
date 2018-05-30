@@ -156,6 +156,41 @@ namespace hva_som_skjer.Controllers
         {
             return View();
         }
+        [Authorize]
+        public async Task<IActionResult> ClubNearYou()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> NearClubs(IEnumerable<ClubViewModel> clubs)
+        {
+            return View(clubs.AsEnumerable());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NearClubs(float lat, float lng)
+        {
+            var userPosision = new Vector2(lat,lng);
+            var clubs = await _db.Clubs.Where(s => s.latitude != 0 && s.longitude !=0).ToListAsync();
+            var RelevantClubs = new List<ClubModel>();
+            foreach(var s in clubs)
+            {
+                var ClubPosision = new Vector2(s.latitude,s.longitude);
+                var vectorResult = userPosision - ClubPosision;
+
+                var kilometersNorthSouth = vectorResult.X*111;
+                var kilometersEastWest = vectorResult.Y*111;
+
+                var distance = Math.Sqrt(Math.Pow(kilometersEastWest,2)+ Math.Pow(kilometersNorthSouth,2));
+                if(distance < 50)
+                {
+                    RelevantClubs.Add(s);
+                }
+            }
+
+            return View(RelevantClubs);
+        }
 
         [Authorize]
         public async Task<IActionResult> EditClub(int? id)
