@@ -17,7 +17,9 @@
 			</div>       
 		</div
 		<div class="comments">
-			<div class="comment-wrap">
+			@if(User.Identity.IsAuthenticated && Model.CurrentUser !=null )
+			{
+				<div class="comment-wrap">
 				<div class="photo">
 					<img class="avatar" src="@Model.CurrentUser.ProfilePicture" alt="Card image cap">
 				</div>
@@ -29,6 +31,8 @@
 					</form>
 				</div>
 			</div>
+			}
+			
 		</div>
 	</div>			
 	@foreach(var s in Model.CommentModel)
