@@ -83,6 +83,20 @@ namespace hva_som_skjer.Controllers
             return View(vm);    
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _um.GetUserAsync(User);
+            
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_um.GetUserId(User)}'.");
+            }
+
+            return View();
+        }
+
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

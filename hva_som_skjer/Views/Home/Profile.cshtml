@@ -1,0 +1,47 @@
+
+<div class="features-blue">
+    <div class="container">
+        <div class="intro">
+            <h2 class="text-center">Brukerprofil</h2>
+            <p class="text-center">Her finner du instillinger og informasjon om kontoen din.</p>
+        </div>
+        <div class="row features profile">
+            <div class="col-sm-6 col-md-4 item">
+                <i class="fa fa-cogs icon"></i>
+                <a asp-controller="Manage" asp-action="Index" title="Manage">
+                    <h3 class="name">Instillinger</h3>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-4 item">
+                <i class="fa fa-calendar-o icon"></i>
+                <a asp-controller="Event" asp-action="Calendar">
+                    <h3 class="name">Min Kalender</h3>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-4 item">
+                <i class="fa fa-heart icon"></i>
+                <a asp-controller="Home" asp-action="Index">
+                    <h3 class="name">Klubber jeg følger</h3>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-4 item">
+                <i class="fa fa-edit icon"></i>
+                <a asp-controller="Home" asp-action="Index">
+                    <h3 class="name">Mine Kommentarer</h3>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-4 item">
+                <i class="fa fa-star icon"></i>
+                <a asp-controller="Home" asp-action="Index">
+                    <h3 class="name">Favoritter</h3>
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-4 item">
+                <i class="fa fa-sign-out icon"></i>
+                <a asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                    <h3 class="name">Logg ut</h3>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
