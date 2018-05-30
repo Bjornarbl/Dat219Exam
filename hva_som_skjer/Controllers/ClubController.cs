@@ -129,7 +129,7 @@ namespace hva_som_skjer.Controllers
                 vm.Limit = 1;
             }
             // This is what actually fetches the data
-            vm.Results = results.ToList();
+            vm.Results = results.Take(vm.Limit).ToList();
             
             // Send result to view
             return View(vm);
