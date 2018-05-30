@@ -1,4 +1,5 @@
 using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using System.Numerics;
 
 namespace hva_som_skjer.Controllers
 {
@@ -401,9 +403,15 @@ namespace hva_som_skjer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Generate(ClubModel club, IFormFile logo, IFormFile banner)
+        public async Task<IActionResult> Generate(ClubModel club, IFormFile logo, IFormFile banner, float lat, float lng)
         {
             Admin ClubAdmin = new Admin();
+
+            if(lat != 0 && lng !=0)
+            {
+               club.latitude = lat;
+               club.longitude = lng;
+            }
 
             club.Admins.Add(ClubAdmin);
             _db.Clubs.Add(club);
