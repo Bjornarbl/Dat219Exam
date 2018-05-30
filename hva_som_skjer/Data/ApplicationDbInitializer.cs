@@ -65,7 +65,7 @@ namespace hva_som_skjer.Data
                 Admin ClubAdmin = new Admin();
                 ClubAdmin.User= user;
                 ClubAdmin.ClubModel = element;
-
+                
                 element.Admins.Add(ClubAdmin);
             }
 

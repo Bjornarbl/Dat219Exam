@@ -32,7 +32,6 @@
         <link rel="stylesheet" href="~/css/Team-Clean.css">
         <link rel="stylesheet" href="~/css/Team-Grid.css">
         <link rel="stylesheet" href="~/css/site.css" />
-        
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/fonts/font-awesome.min.css">
@@ -40,6 +39,31 @@
             crossorigin="anonymous" asp-fallback-href="~/lib/css/bootstrap.min.csss" asp-fallback-test-class="sr-only" asp-fallback-test-property="position"
             asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/lib/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/ionicons.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
+        <link rel="stylesheet" href="~/css/font-awesome.css">
+        <link rel="stylesheet" href="~/css/Article-List.css">
+        <link rel="stylesheet" href="~/css/Calendar-BS4.css">
+        <link rel="stylesheet" href="~/css/Calendar-BS41.css">
+        <link rel="stylesheet" href="~/css/Contact-FormModal-Contact-Form-with-Google-Map.css">
+        <link rel="stylesheet" href="~/css/Features-Blue.css">
+        <link rel="stylesheet" href="~/css/Features-Boxed.css">
+        <link rel="stylesheet" href="~/css/Footer-Basic.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/css/swiper.min.css">
+        <link rel="stylesheet" href="~/css/Login-Form-Clean.css">
+        <link rel="stylesheet" href="~/css/Login-Form-Dark.css">
+        <link rel="stylesheet" href="~/css/Map-Clean.css">
+        <link rel="stylesheet" href="~/css/Navigation-with-Button.css">
+        <link rel="stylesheet" href="~/css/Navigation-with-Search.css">
+        <link rel="stylesheet" href="~/css/SideMenu.css"/>
+        <link rel="stylesheet" href="~/css/Newsletter-Subscription-Form.css">
+        <link rel="stylesheet" href="~/css/Registration-Form-with-Photo.css">
+        <link rel="stylesheet" href="~/css/Simple-Slider.css">
+        <link rel="stylesheet" href="~/css/styles.css">
+        <link rel="stylesheet" href="~/css/Team-Clean.css">
+        <link rel="stylesheet" href="~/css/Team-Grid.css">
+        <link rel="stylesheet" href="~/css/site.css" />
     </environment>
 </head>
 
@@ -47,9 +71,15 @@
     <div>
         <nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
             <div class="container">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index" style="color:#1051a2;font-family:Audiowide, cursive;font-size:26px;">Hva Som Skjer&nbsp;
-                    <br>
-                </a>
+
+                
+                <a href="@Url.Action("Index","Home")">
+                    <img class="Logo" id="logo" src="../../images\logo.jpg"  height="100">
+                </a> 
+                
+                <!--<a class="navbar-brand" asp-controller="Home" asp-action="Index" style="color:#1051a2;font-family:Audiowide, cursive;font-size:26px;">Hva Som Skjer&nbsp;
+                <br>
+                </a>-->
                 <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="navbar-toggler-icon"></span>
@@ -57,7 +87,7 @@
                 <div class="col-lg-3">
                     <form asp-controller="Club" asp-action="Search" method="GET">
                         <div class="input-group">
-                            <input name="Name" type="text" class="form-control" placeholder="Søk ...">
+                            <input name="Search" class="form-control" placeholder="Søk ...">
                         </div>
                     </form>
                 </div>
@@ -69,9 +99,12 @@
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" asp-controller="Event" asp-action="Index" style="color:#1051a2;">Arrangementer</a>
                         </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" asp-controller="Event" asp-action="Calendar" style="color:#1051a2;">Kalender</a>
-                        </li>
+                        @if(User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" asp-controller="Event" asp-action="Calendar" style="color:#1051a2;">Kalender</a>
+                            </li>
+                        }
                     </ul>
                      @await Html.PartialAsync("_LoginPartial")
                 </div>
@@ -120,14 +153,18 @@
         -->
     </environment>
     <environment exclude="Development">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" asp-fallback-src="~/lib/js/jquery-3.3.1.min.js"
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" asp-fallback-src="~/lib/js/jquery-3.3.1.min.js"
             asp-fallback-test="window.jQuery" crossorigin="anonymous" integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
         </script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" asp-fallback-src="~/lib/js/bootstrap.bundle.min.js"
             asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
             crossorigin="anonymous">
-        </script>
+        </script>-->
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="~/js/jquery.js"></script>
+        <script src="~/lib/js/bootstrap.bundle.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/js/swiper.jquery.min.js"></script>
+        <script src="~/js/Simple-Slider1.js"></script>
     </environment>
 
     @RenderSection("Scripts", required: false)
@@ -141,7 +178,6 @@
         }
     });
   </script>
-
 </body>
 
 </html>

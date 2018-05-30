@@ -6,8 +6,6 @@
 
 <hr />
 
-<a asp-action="Create">Opprett Arrangement</a>
-
 @foreach (var item in Model) 
 {
     Html.RenderPartial("_EventPartial", item);

@@ -1,0 +1,17 @@
+@model hva_som_skjer.Models.SubscrtiptionViewModel
+
+<div class="team-clean">
+    <div class="container">
+        <div class="intro">
+            <h2 class="text-center">Dine Abonomenter</h2>            
+        </div>
+        <br>
+        
+        @foreach(var i in Model.News){
+
+            var commentModel = new CommentViewModel(i,Model.Comments,Model.Users,Model.CurrentUser);
+            Html.RenderPartial("_SubscriptionPartial", commentModel);    
+        }
+        
+    </div>   
+</div>

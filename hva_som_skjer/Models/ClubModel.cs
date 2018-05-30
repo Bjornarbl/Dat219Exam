@@ -12,8 +12,9 @@ namespace hva_som_skjer.Models
     {
         public ClubModel()
         {
-            Admins = new Collection<Admin>();
             News = new List<NewsModel>();
+            Events = new List<Event>();
+            Admins = new List<Admin>();
         }
 
         //denne brukes til json filen til å populere siden
@@ -76,20 +77,19 @@ namespace hva_som_skjer.Models
         public string BannerImage {get; set; }
 
 
-        public ICollection<Admin> Admins {get; set;}
+        public List<Admin> Admins {get; set;}
     
         public List<NewsModel> News{get; set;}
-        public ICollection<Event> Events { get; set; }
+        
+        public List<Event> Events { get; set; }
         
     }
 
     public class Admin
     {
 
-        public Admin(){}
-
         [Key]
-        public int ClubAdminId{get; set;}
+        public int AdminId{get; set;}
 
         public virtual ApplicationUser User{get; set;}
         

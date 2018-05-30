@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace hva_som_skjer.Controllers
 {
@@ -44,36 +45,93 @@ namespace hva_som_skjer.Controllers
                 return NotFound();
             }
 
-            var vm = new NewsViewModel();
+            var vm = new Models.NewsViewModel();
 
             vm.NewsModel = _db.News.OrderByDescending(NewsModel => NewsModel.Id).ToList();
             vm.CommentModel =_db.Comments.ToList();
 
+            var user = await _um.GetUserAsync(User);
             vm.Club = clubtemp;
-            vm.User = await _um.GetUserAsync(User);
+            vm.Users = _db.Users.ToList();
+            vm.CurrentUser = user;
+            vm.isAdmin = false;
+            if(User.Identity.IsAuthenticated && !(user == null))
+            {
+                var admins = await _db.Admins.ToListAsync();
+                var relevantAdmins = admins.Where(Admin => Admin.User == user);
+                
+                foreach(var s in relevantAdmins)
+                {
+                    if(s.ClubModel == clubtemp)
+                    {
+                        vm.isAdmin = true;
+                    }
+                }
 
+                var subscriptions = await _db.Subscriptions.ToListAsync();
+                var relevantSub = subscriptions.Where(Subscription => Subscription.user == user);
+
+                foreach(var s in relevantSub)
+                {
+                    if(s.club == clubtemp)
+                    {
+                        vm.isFollowing = true;
+                    }
+                }
+
+            }
             return View(vm);
         }
 
-        public async Task<IActionResult> Search(string name) 
+        public async Task<IActionResult> Search(ClubViewModel vm) 
         {
-            if (name == null)
+            if (vm == null)
             {
-                return NotFound();
+                vm = new ClubViewModel();
+                vm.Limit = 10;
             }
 
-            var clubs = _db.Clubs.Where(s => s.Name.ToLower().Contains(name.ToLower()) || 
-            s.Category.ToLower().Contains(name.ToLower()) ||
-            s.Description.ToLower().Contains(name.ToLower()) 
+            // Do not perform a search if the search is invalid
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            // Perform search, one filter at a time
+            var results = _db.Clubs.AsQueryable();
+
+            if (vm.Search != null)
+                results = results.Where(p => p.Name.ToLower().Contains(vm.Search.ToLower()) ||
+                p.Category.ToLower().Contains(vm.Search.ToLower())
+                || p.Founded.Equals(vm.Search)
+                );
             
-            );
-            if (!clubs.Any())
-            {
-                return NotFound();
-            }
+            if(vm.Type == "Category" && vm.OrderBy == "A")
+                results = results.OrderBy(p=> p.Category);
+            
+            if(vm.Type == "Category" && vm.OrderBy == "Z")
+                results = results.OrderByDescending(p => p.Category);
 
-            return View(clubs.ToList());
-        }  
+            if(vm.Type == "Founded" && vm.OrderBy == "A")
+                results = results.OrderByDescending(p => p.Founded);
+
+            if(vm.Type == "Founded" && vm.OrderBy == "Z")
+                results = results.OrderBy(p=> p.Founded);
+                
+
+            if(vm.Type == "Name" && vm.OrderBy == "A")
+                results = results.OrderBy(p=> p.Name);
+
+            if(vm.Type == "Name" && vm.OrderBy == "Z") 
+                results = results.OrderByDescending(p => p.Name);
+
+            if(vm.Limit <= 0) {
+                vm.Limit = 1;
+            }
+            // This is what actually fetches the data
+            vm.Results = results.ToList();
+            
+            // Send result to view
+            return View(vm);
+        } 
 
         public async Task<IActionResult> Clubs(string category) 
         {
@@ -91,11 +149,13 @@ namespace hva_som_skjer.Controllers
             return View(clubs.ToList());
         }
 
+        [Authorize]
         public async Task<IActionResult> CreateClub()
         {
             return View();
         }
 
+        [Authorize]
         public async Task<IActionResult> EditClub(int? id)
         {
             if (id == null)
@@ -110,8 +170,33 @@ namespace hva_som_skjer.Controllers
                 return NotFound();
             }
 
-            return View(club);
+            if(User.Identity.IsAuthenticated )
+            {
+                var user = await _um.GetUserAsync(User);
+                if(!(user == null))
+                {
+                    bool isAdmin = false;
+                    var admins = await _db.Admins.ToListAsync();
+                    var relevantAdmins = admins.Where(Admin => Admin.User == user);             
+                    foreach(var s in relevantAdmins)
+                    {
+                        if(s.ClubModel == club)
+                        {
+                            isAdmin = true;
+                        }
+                    }
+                    if(isAdmin)
+                    {
+                        return View(club);
+                    }else
+                    {
+                        return RedirectToAction("Club",new{ID = club.Id});
+                    }
+                }    
+            }
+            return RedirectToAction("Club",new{ID = club.Id});
         }
+        [Authorize]
         public async Task<IActionResult> AddNews(int? id)
         {
             if (id == null)
@@ -126,7 +211,31 @@ namespace hva_som_skjer.Controllers
                 return NotFound();
             }
 
-            return View(club);
+            if(User.Identity.IsAuthenticated )
+            {
+                var user = await _um.GetUserAsync(User);
+                if(!(user == null))
+                {
+                    bool isAdmin = false;
+                    var admins = await _db.Admins.ToListAsync();
+                    var relevantAdmins = admins.Where(Admin => Admin.User == user);             
+                    foreach(var s in relevantAdmins)
+                    {
+                        if(s.ClubModel == club)
+                        {
+                            isAdmin = true;
+                        }
+                    }
+                    if(isAdmin)
+                    {
+                        return View(club);
+                    }else
+                    {
+                        return RedirectToAction("Club",new{ID = club.Id});
+                    }
+                }    
+            }
+            return RedirectToAction("Club",new{ID = club.Id});
         }
 
         [HttpPost]
@@ -136,9 +245,8 @@ namespace hva_som_skjer.Controllers
             
             try
             {
-                 string filename = string.Format(@"{0}.png", Guid.NewGuid());
-                
                 var oldPicture = club.Image;
+                string filename = string.Format(@"{0}.png", Guid.NewGuid());
                 club.Image = "../../images/LogoPictures/"+filename;
                 _db.Clubs.Update(club);
                 _db.SaveChanges();
@@ -151,6 +259,13 @@ namespace hva_som_skjer.Controllers
                     await files[0].CopyToAsync(stream);
                 }
                 //TODO: delete old profile picture. Problem is Access to path * is denied
+                if(oldPicture != "../../images/LogoPictures/tempLogo.png")
+                {
+                    char[] MyChar = {'.', '.','/' };
+                    string tempName = oldPicture.TrimStart(MyChar);
+                    tempName = "../hva_som_skjer/wwwroot/"+tempName;
+                    System.IO.File.Delete(tempName);
+                }
             }catch{ return RedirectToAction("EditClub",new{ID = club.Id});}    
             
             return RedirectToAction("Club",new{ID = club.Id});
@@ -163,9 +278,8 @@ namespace hva_som_skjer.Controllers
             
             try
             {
-                string filename = string.Format(@"{0}.png", Guid.NewGuid());
-                                
                 var oldPicture = club.BannerImage;
+                string filename = string.Format(@"{0}.png", Guid.NewGuid());
                 club.BannerImage = "../../images/BannerPictures/"+filename;
                 _db.Clubs.Update(club);
                 _db.SaveChanges();
@@ -179,6 +293,13 @@ namespace hva_som_skjer.Controllers
                     await files[0].CopyToAsync(stream);
                 }
             //TODO: delete old profile picture. Problem is Access to path * is denied
+            if(oldPicture != "../../images/BannerPictures/defaultBanner.png")
+                {
+                    char[] MyChar = {'.', '.','/' };
+                    string tempName = oldPicture.TrimStart(MyChar);
+                    tempName = "../hva_som_skjer/wwwroot/"+tempName;
+                    System.IO.File.Delete(tempName);
+                }
             }catch
             {
                 return RedirectToAction(nameof(Index));
@@ -222,8 +343,9 @@ namespace hva_som_skjer.Controllers
             return RedirectToAction("Club",new{ID = club.Id});
         }
 
+        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddComment(CommentModel comment)
+        public async Task<IActionResult> AddComment(CommentModel comment, string returnURL)
         {
             
             var news = await _db.News.SingleOrDefaultAsync(m => m.Id == comment.NewsId);
@@ -231,8 +353,7 @@ namespace hva_som_skjer.Controllers
             var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == news.clubId);
 
             var user = await _um.GetUserAsync(User);
-            comment.Author = user.UserName;
-            comment.AuthorPicture = user.ProfilePicture;
+            comment.Author = user;
             comment.news = news;
         
 
@@ -242,32 +363,120 @@ namespace hva_som_skjer.Controllers
             return RedirectToAction("Club",new{ID = club.Id});
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Subscribe(int clubId)
+        {
+            var user = await _um.GetUserAsync(User);
+            var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == clubId);
+
+            Subscription subscription = new Subscription();
+            subscription.club = club;
+            subscription.user = user;  
+
+            _db.Add(subscription);
+            _db.SaveChanges();
+
+            return RedirectToAction("Club",new{ID = club.Id});
+        }
 
         [HttpPost]
-        public async Task<IActionResult> Generate(ClubModel club)
+        public async Task<IActionResult> Unsubscribe(int clubId)
+        {
+            var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == clubId);
+            var user = await _um.GetUserAsync(User);
+
+            var subscriptions = await _db.Subscriptions.ToListAsync();
+            var relevantSub = subscriptions.Where(Subscription => Subscription.user == user);
+
+            foreach(var s in relevantSub)
+            {
+                if(s.club == club)
+                {
+                   _db.Subscriptions.Attach(s);
+                   _db.Subscriptions.Remove(s);
+                   _db.SaveChanges();
+                }
+            }
+            return RedirectToAction("Club",new{ID = clubId});
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Generate(ClubModel club, IFormFile logo, IFormFile banner)
         {
             Admin ClubAdmin = new Admin();
 
             club.Admins.Add(ClubAdmin);
             _db.Clubs.Add(club);
 
+            if(logo == null)
+            {
+                club.Image = "../../images/LogoPictures/tempLogo.png";
+            }else
+            {
+                try
+                {
+                    string filename = string.Format(@"{0}.png", Guid.NewGuid());
+                    club.Image = "../../images/LogoPictures/"+filename;
+                    _db.SaveChanges();
 
-            club.Image = "../../images/LogoPictures/tempLogo.png";
-            club.BannerImage = "../../images/BannerPictures/defaultBanner.png";
+                    var localPath = Directory.GetCurrentDirectory();
+                    string filePath = "\\wwwroot\\images\\LogoPictures\\"+filename;
+                    string wholePath = localPath+filePath;
+                    using (var stream = new FileStream(wholePath, FileMode.Create))
+                    {
+                        await logo.CopyToAsync(stream);
+                    }
+                
+                }catch{ club.Image = "../../images/LogoPictures/tempLogo.png";}  
+            }
+            if(banner == null)
+            {
+                club.BannerImage = "../../images/BannerPictures/defaultBanner.png";
+            }else
+            {
+                try
+                {
+                    string filename = string.Format(@"{0}.png", Guid.NewGuid());
+                    club.BannerImage = "../../images/BannerPictures/"+filename;
+                    _db.SaveChanges();
 
+                    var localPath = Directory.GetCurrentDirectory();
+                    string filePath = "\\wwwroot\\images\\BannerPictures\\"+filename;
+                    string wholePath = localPath+filePath;
+                    using (var stream = new FileStream(wholePath, FileMode.Create))
+                    {
+                        await banner.CopyToAsync(stream);
+                    }
+                
+                }catch{ club.BannerImage = "../../images/BannerPictures/defaultBanner.png";}
+            }
+            
             var user = await _um.GetUserAsync(User);
             
             ClubAdmin.ClubModel = club;
             ClubAdmin.User = user;
-
-            //_db.Clubs.Update(club);
-            //_db.Admins.Update(ClubAdmin);
             _db.SaveChanges();
 
             return RedirectToAction("Club",new{ID = club.Id});
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddAdmin(string Name, int Id)
+        {
+            var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == Id);
+            var user = await _db.Users.ToListAsync();
+            var selectedUser = user.Where(ApplicationUser => ApplicationUser.UserName == Name);
+            if(selectedUser != null)
+            {
+                Admin admin = new Admin();
+                admin.User = selectedUser.FirstOrDefault();
+                admin.ClubModel = club;
 
+                _db.Add(admin);
+                _db.SaveChanges();
+            }
+            return RedirectToAction("Club",new{ID = club.Id});
+        }
 
         public IActionResult Error()
         {

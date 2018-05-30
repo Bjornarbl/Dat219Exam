@@ -2,21 +2,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<div id="mySidenav" class="sidenav">
-    <img class="card-img-top" src="@Model.Image" alt="Card image cap">
-    <a href="#">Om Klubben</a>
-    <a href="#">Kontakt</a>
-    <a asp-action="EditClub" asp-route-id="@Model.Id">Rediger klubb </a>
-</div>
-<br/>
-<div id="main">
 
-
-<form class="form-horizontal" method="post" enctype="ultipart/form-data" asp-controller="Club" asp-action="AddNewsMethod">
+<form class="form-horizontal container" method="post" enctype="ultipart/form-data" asp-controller="Club" asp-action="AddNewsMethod">
     <fieldset>
     
     <legend>Publiser Nyhet</legend>
-
     <div class="form-group">
     <label class="col-md-4 control-label" for="Title">Nyhets navn</label>  
     <div class="col-md-4">
@@ -45,33 +35,3 @@
 </form>
 </div>
 
-<style>
-.sidenav {
-    height: 100%;
-    width: 200px;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: rgb(255, 255, 255);
-    overflow-x: hidden;
-    padding-top: 20px;
-}
-
-.sidenav a {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #1485ee;
-    display: block;
-}
-
-.sidenav a:hover {
-    color: #000000;
-}
-
-#main {
-    margin-left: 200px; /* Same as the width of the sidenav */
-    padding: 0px 10px;
-}
-</style>

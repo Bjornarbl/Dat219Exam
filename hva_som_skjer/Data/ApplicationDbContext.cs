@@ -28,6 +28,7 @@ namespace hva_som_skjer.Data
         public DbSet<Models.CommentModel> Comments { get; set; }
         public DbSet<Models.Admin> Admins { get; set; } 
         public DbSet<Models.Event> Events { get; set; }
-
+        public DbSet<Models.Subscription> Subscriptions { get; set; } 
+        public DbSet<Models.Attendee> Attendees { get; set; }
     }
 }

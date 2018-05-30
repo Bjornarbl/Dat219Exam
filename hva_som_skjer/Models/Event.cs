@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using hva_som_skjer.models;
+using hva_som_skjer.Models;
 
 namespace hva_som_skjer.Models
 {
@@ -14,10 +14,10 @@ namespace hva_som_skjer.Models
 
         public int Id { get; set; }
 
-        //public int ClubId { get; set; }
-        //public ClubModel Club { get; set; }
+        public int ClubId { get; set; }
+        public ClubModel Club { get; set; }
 
-        //public List<EventAttendees> EventAttendees { get; set; }
+        public List<Attendee> Attendees { get; set; }
 
         [StringLength(60, MinimumLength = 3)]
         [Display(Name="Tittel*")]
