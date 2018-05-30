@@ -1,11 +1,86 @@
-﻿// Configure bundling and minification for the project.
-// More info at https://go.microsoft.com/fwlink/?LinkId=808241
-[
+﻿[
   {
     "outputFileName": "wwwroot/css/site.min.css",
-    // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
       "wwwroot/css/site.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/css/bootstrap.min.css",
+    "inputFiles": [
+      "wwwroot/lib/css/bootstrap.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/ionicons.min.css",
+    "inputFiles": [
+      "wwwroot/css/ionicons.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/font-awesome.min.css",
+    "inputFiles": [
+      "wwwroot/css/font-awesome.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/Calendar-BS4.min.css",
+    "inputFiles": [
+      "wwwroot/css/Calendar-BS4.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/Features-Blue.min.css",
+    "inputFiles": [
+      "wwwroot/css/Features-Blue.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/Footer-Basic.min.css",
+    "inputFiles": [
+      "wwwroot/css/Footer-Basic.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/Login-Form-Clean.min.css",
+    "inputFiles": [
+      "wwwroot/css/Login-Form-Clean.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/Login-Form-Dark.min.css",
+    "inputFiles": [
+      "wwwroot/css/Login-Form-Dark.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/Navigation-with-Button.min.css",
+    "inputFiles": [
+      "wwwroot/css/Navigation-with-Button.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/Registration-Form-with-Photo.min.css",
+    "inputFiles": [
+      "wwwroot/css/Registration-Form-with-Photo.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/Simple-Slider.min.css",
+    "inputFiles": [
+      "wwwroot/css/Simple-Slider.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/Team-Clean.min.css",
+    "inputFiles": [
+      "wwwroot/css/Team-Clean.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/Team-Grid.min.css",
+    "inputFiles": [
+      "wwwroot/css/Team-Grid.css"
     ]
   },
   {
@@ -13,12 +88,32 @@
     "inputFiles": [
       "wwwroot/js/site.js"
     ],
-    // Optionally specify minification options
     "minify": {
       "enabled": true,
       "renameLocals": true
     },
-    // Optionally generate .map file
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/jquery.min.js",
+    "inputFiles": [
+      "wwwroot/js/jquery.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/Simple-Slider1.min.js",
+    "inputFiles": [
+      "wwwroot/js/Simple-Slider1.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
     "sourceMap": false
   }
 ]
