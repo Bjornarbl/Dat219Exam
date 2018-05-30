@@ -1,4 +1,5 @@
 using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using System.Numerics;
 
 namespace hva_som_skjer.Controllers
 {
@@ -153,6 +155,41 @@ namespace hva_som_skjer.Controllers
         public async Task<IActionResult> CreateClub()
         {
             return View();
+        }
+        [Authorize]
+        public async Task<IActionResult> ClubNearYou()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> NearClubs(IEnumerable<ClubViewModel> clubs)
+        {
+            return View(clubs.AsEnumerable());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> NearClubs(float lat, float lng)
+        {
+            var userPosision = new Vector2(lat,lng);
+            var clubs = await _db.Clubs.Where(s => s.latitude != 0 && s.longitude !=0).ToListAsync();
+            var RelevantClubs = new List<ClubModel>();
+            foreach(var s in clubs)
+            {
+                var ClubPosision = new Vector2(s.latitude,s.longitude);
+                var vectorResult = userPosision - ClubPosision;
+
+                var kilometersNorthSouth = vectorResult.X*111;
+                var kilometersEastWest = vectorResult.Y*111;
+
+                var distance = Math.Sqrt(Math.Pow(kilometersEastWest,2)+ Math.Pow(kilometersNorthSouth,2));
+                if(distance < 50)
+                {
+                    RelevantClubs.Add(s);
+                }
+            }
+
+            return View(RelevantClubs);
         }
 
         [Authorize]
@@ -401,9 +438,15 @@ namespace hva_som_skjer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Generate(ClubModel club, IFormFile logo, IFormFile banner)
+        public async Task<IActionResult> Generate(ClubModel club, IFormFile logo, IFormFile banner, float lat, float lng)
         {
             Admin ClubAdmin = new Admin();
+
+            if(lat != 0 && lng !=0)
+            {
+               club.latitude = lat;
+               club.longitude = lng;
+            }
 
             club.Admins.Add(ClubAdmin);
             _db.Clubs.Add(club);

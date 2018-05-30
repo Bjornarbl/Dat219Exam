@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Numerics;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace hva_som_skjer.Models
@@ -76,6 +77,10 @@ namespace hva_som_skjer.Models
 
         public string BannerImage {get; set; }
 
+
+        public float longitude{get; set;}
+
+        public float latitude {get; set;}
 
         public List<Admin> Admins {get; set;}
     
