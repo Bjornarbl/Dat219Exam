@@ -4,6 +4,8 @@ namespace hva_som_skjer.Models
 {
     public class EventViewModel
     {
+        public List<Event> Events { get; set; }
+        public List<Event> ArchivedEvents { get; set; }
         public Event Event { get; set; }
 
         public ClubModel Club{ get; set; }

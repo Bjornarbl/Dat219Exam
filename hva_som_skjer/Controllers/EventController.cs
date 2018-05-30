@@ -28,15 +28,28 @@ namespace hva_som_skjer.Controllers
         // GET: Event/key?ALl
         public async Task<IActionResult> Index(int? key)
         {
+            var vm = new EventViewModel();
+
             if (key != null)
             {
-                var evts = await _db.Events.Where(s => s.ClubId == key).ToListAsync();                
-                return View(evts.OrderBy(x => x.StartDate));
+                var evts = await _db.Events.Where(s => s.ClubId == key).OrderBy(x => x.StartDate).ToListAsync();  
+                var upcommingEvts = evts.Where(m => m.StartDate > DateTime.UtcNow).ToList();
+                var archivedEvts = evts.Where(m => m.StartDate < DateTime.UtcNow).ToList();
+
+                vm.Events = upcommingEvts;
+                vm.ArchivedEvents = archivedEvts;
+
+                return View(vm);
             }
    
-            var events = await _db.Events.ToListAsync();  
+            var events = await _db.Events.OrderBy(x => x.StartDate).ToListAsync();  
+            var upcommingEvents = events.Where(m => m.StartDate > DateTime.UtcNow).ToList();
+            var archivedEvents = events.Where(m => m.StartDate < DateTime.UtcNow).ToList();
+
+            vm.Events = upcommingEvents;
+            vm.ArchivedEvents = archivedEvents;
                       
-            return View(events.OrderBy(x => x.StartDate));
+            return View(vm);
         }
 
         // GET: Event

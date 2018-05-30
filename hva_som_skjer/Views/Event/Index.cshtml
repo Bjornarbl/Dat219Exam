@@ -1,12 +1,34 @@
-@model IEnumerable<hva_som_skjer.Models.Event>
+@model hva_som_skjer.Models.EventViewModel
 
 @{
     ViewData["Title"] = "Arrangementer";
 }
 
-<hr />
 
-@foreach (var item in Model) 
+<div class="team-grid">
+    <div class="container">
+           <div class="intro">
+            <h2 class="text-center">Kommende Arrangementer</h2>
+            <br>
+        </div>
+    </div>
+</div>
+
+@foreach (var item in Model.Events) 
 {
     Html.RenderPartial("_EventPartial", item);
 }    
+
+<div class="team-grid">
+    <div class="container">
+           <div class="intro">
+            <h2 class="text-center">Arkiverte Arrangementer</h2>
+            <br>
+        </div>
+    </div>
+</div>
+
+@foreach (var item in Model.ArchivedEvents) 
+{
+    Html.RenderPartial("_EventPartial", item);
+}  
