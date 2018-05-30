@@ -126,7 +126,7 @@ namespace hva_som_skjer.Controllers
                 results = results.OrderByDescending(p => p.Name);
 
             if(vm.Limit <= 0) {
-                vm.Limit = 1;
+                vm.Limit = 10;
             }
             // This is what actually fetches the data
             vm.Results = results.Take(vm.Limit).ToList();

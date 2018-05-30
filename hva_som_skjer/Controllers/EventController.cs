@@ -240,25 +240,25 @@ namespace hva_som_skjer.Controllers
                 if (file != null)
                 {
                     string filename = string.Format(@"{0}.png", Guid.NewGuid());
-                    string filePath = "/images/events/"+filename;
-                    string oldpath = @event.ImagePath;
-
+                    string imagePath = "/images/events/"+filename;
+                    string oldImagePath = @event.ImagePath;
                     var localPath = Directory.GetCurrentDirectory();
-                    localPath += "/wwwroot/" + filePath;
+
+                    var filePath = localPath + "/wwwroot/" + imagePath;
+                    string oldFilePath = localPath + "/wwwroot/" + oldImagePath;
 
                     if (file.Length > 0)
                     {
-                        using (var stream = new FileStream(localPath, FileMode.Create))
+                        using (var stream = new FileStream(filePath, FileMode.Create))
                         {
                             await file.CopyToAsync(stream);
                         }
                     }
-                    @event.ImagePath = filePath;
+                    @event.ImagePath = imagePath;
 
-                    if(oldpath != "/images/events/event-default.png")
+                    if(oldImagePath != "/images/events/event-default.png")
                     {
-                    string oldpicture = localPath + "/wwwroot/" + oldpath;
-                    System.IO.File.Delete(oldpicture);
+                    System.IO.File.Delete(oldFilePath);
                     }
                 }
 
@@ -291,6 +291,62 @@ namespace hva_som_skjer.Controllers
             }
             return View(@event);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditImage(int id, IFormFile file)
+        {
+            var @event = await _db.Events.SingleOrDefaultAsync(m => m.Id == id);
+
+            if (@event == null || file == null)
+            {
+                return RedirectToAction(nameof(Details), new { Id = @event.Id });
+            }
+
+            if (file != null)
+            {
+                string filename = string.Format(@"{0}.png", Guid.NewGuid());
+                string filePath = "/images/events/"+filename;
+                string oldpath = @event.ImagePath;
+
+                var localPath = Directory.GetCurrentDirectory();
+                localPath += "/wwwroot/" + filePath;
+
+                if (file.Length > 0)
+                {
+                    using (var stream = new FileStream(localPath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+                }
+                @event.ImagePath = filePath;
+
+                if(oldpath != "/images/events/event-default.png")
+                {
+                    string oldpicture = localPath + "/wwwroot/" + oldpath;
+                    System.IO.File.Delete(oldpicture);
+                }
+            }
+
+            try
+            {
+                _db.Update(@event);
+                await _db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!EventExists(@event.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Details), new { Id = @event.Id });
+        }
+
 
         // GET: Event/Delete/5
         [Authorize]
