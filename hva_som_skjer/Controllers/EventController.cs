@@ -174,7 +174,7 @@ namespace hva_som_skjer.Controllers
                 }
                 else 
                 {
-                    @event.ImagePath = "/images/events/EventDefault.PNG";
+                    @event.ImagePath = "/images/events/event-default.png";
                 }
 
                 var club = await _db.Clubs.SingleOrDefaultAsync(m => m.Id == @event.ClubId);
@@ -255,7 +255,7 @@ namespace hva_som_skjer.Controllers
                     }
                     @event.ImagePath = filePath;
 
-                    if(oldpath != "/images/events/EventDefault.PNG")
+                    if(oldpath != "/images/events/event-default.png")
                     {
                     string oldpicture = localPath + "/wwwroot/" + oldpath;
                     System.IO.File.Delete(oldpicture);
@@ -331,7 +331,7 @@ namespace hva_som_skjer.Controllers
             var localPath = Directory.GetCurrentDirectory();
             string oldpicture = localPath + "/wwwroot/" + oldpath;
 
-            if(oldpath != "/images/events/EventDefault.PNG")
+            if(oldpath != "/images/events/event-default.png")
             {
                 System.IO.File.Delete(oldpicture);
             }
