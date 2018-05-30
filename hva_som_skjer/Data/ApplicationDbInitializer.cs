@@ -7,11 +7,16 @@ namespace hva_som_skjer.Data
 {
     public static class ApplicationDbInitializer
     {
-        public static void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> um)
+        public static void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> um, bool IsDevelopment)
         {
+            if (!IsDevelopment)
+            {
+                context.Database.EnsureCreated();
+                return;
+            }
+
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
-
 
             /* 
                 context.Clubs.AddRange(new List<ClubModel>{

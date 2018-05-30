@@ -25,7 +25,9 @@ namespace hva_som_skjer
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<ApplicationDbContext>();
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                ApplicationDbInitializer.Initialize(context, userManager);
+                var env = services.GetRequiredService<IHostingEnvironment>();
+
+                ApplicationDbInitializer.Initialize(context, userManager, env.IsDevelopment());
             }
 
             host.Run();
