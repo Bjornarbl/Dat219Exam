@@ -222,7 +222,7 @@ namespace hva_som_skjer.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                user.ProfilePicture = "../../images/ProfilePictures/tempProfile.png";
+                user.ProfilePicture = "/images/ProfilePictures/tempProfile.png";
                 
                 
                 var result = await _userManager.CreateAsync(user, model.Password);

@@ -450,35 +450,28 @@ namespace hva_som_skjer.Controllers
         [HttpPost]
         public async Task<IActionResult> Upload(List<IFormFile> files)
         {
-            
-            
             if (files[0].Length > 0)
             {
-                string filename = string.Format(@"{0}.png", Guid.NewGuid());            
-                string path = "../../images/ProfilePictures/"+filename; 
                 var user = await _userManager.GetUserAsync(User);
-                var oldPicture = user.ProfilePicture;
-                user.ProfilePicture = path;
+
+                string oldImagePath = user.ProfilePicture;
+                string filename = string.Format(@"{0}.png", Guid.NewGuid());            
+                string imagePath = "/images/ProfilePictures/" + filename; 
+                user.ProfilePicture = imagePath;
                 await _userManager.UpdateAsync(user);
 
                 var localPath = Directory.GetCurrentDirectory();
-                string filePath = "\\wwwroot\\images\\ProfilePictures\\"+filename;
-                string wholePath = localPath+filePath;
-                using (var stream = new FileStream(wholePath, FileMode.Create))
+                string filePath = localPath + "/wwwroot/" + imagePath;
+                string oldFilePath = localPath + "/wwwroot/" + oldImagePath;
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await files[0].CopyToAsync(stream);
                 }
-                //TODO: delete old profile picture. Problem is Access to pat * is denied
-                if(oldPicture != "../../images/ProfilePictures/tempProfile.png")
+                if(oldImagePath != "/images/ProfilePictures/tempProfile.png")
                 {
-                    char[] MyChar = {'.', '.','/' };
-                    string tempName = oldPicture.TrimStart(MyChar);
-                    tempName = "../hva_som_skjer/wwwroot/"+tempName;
-                    System.IO.File.Delete(tempName);
+                    System.IO.File.Delete(oldFilePath);
                 }
-                
-
-
             }    
             
             return RedirectToAction(nameof(Index));
