@@ -282,26 +282,25 @@ namespace hva_som_skjer.Controllers
             
             try
             {
-                var oldPicture = club.Image;
+                string oldImagePath = club.Image;
                 string filename = string.Format(@"{0}.png", Guid.NewGuid());
-                club.Image = "../../images/LogoPictures/"+filename;
+                string imagepath = "/images/LogoPictures/" + filename;
+                club.Image = imagepath;
                 _db.Clubs.Update(club);
                 _db.SaveChanges();
 
                 var localPath = Directory.GetCurrentDirectory();
-                string filePath = "\\wwwroot\\images\\LogoPictures\\"+filename;
-                string wholePath = localPath+filePath;
-                using (var stream = new FileStream(wholePath, FileMode.Create))
+                string filePath = localPath + "/wwwroot/" + imagepath;
+                string oldFilePath = localPath + "/wwwroot/" + oldImagePath;
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await files[0].CopyToAsync(stream);
                 }
                 //TODO: delete old profile picture. Problem is Access to path * is denied
-                if(oldPicture != "../../images/LogoPictures/tempLogo.png")
+                if(oldImagePath != "/images/LogoPictures/tempLogo.png")
                 {
-                    char[] MyChar = {'.', '.','/' };
-                    string tempName = oldPicture.TrimStart(MyChar);
-                    tempName = "../hva_som_skjer/wwwroot/"+tempName;
-                    System.IO.File.Delete(tempName);
+                    System.IO.File.Delete(oldFilePath);
                 }
             }catch{ return RedirectToAction("EditClub",new{ID = club.Id});}    
             
@@ -315,27 +314,25 @@ namespace hva_som_skjer.Controllers
             
             try
             {
-                var oldPicture = club.BannerImage;
+                string oldImagePath = club.BannerImage;
                 string filename = string.Format(@"{0}.png", Guid.NewGuid());
-                club.BannerImage = "../../images/BannerPictures/"+filename;
+                string imagePath = "/images/bannerpictures" + filename;
+                club.BannerImage = imagePath;
                 _db.Clubs.Update(club);
                 _db.SaveChanges();
-
-
+                    
                 var localPath = Directory.GetCurrentDirectory();
-                string filePath = "\\wwwroot\\images\\BannerPictures\\"+filename;
-                string wholePath = localPath+filePath;
-                using (var stream = new FileStream(wholePath, FileMode.Create))
+                string filePath = localPath + "/wwwroot/" + imagePath;
+                string oldFilePath = localPath + "/wwwroot/" + oldImagePath;
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await files[0].CopyToAsync(stream);
                 }
             //TODO: delete old profile picture. Problem is Access to path * is denied
-            if(oldPicture != "../../images/BannerPictures/defaultBanner.png")
+            if(oldImagePath != "/images/BannerPictures/defaultBanner.png")
                 {
-                    char[] MyChar = {'.', '.','/' };
-                    string tempName = oldPicture.TrimStart(MyChar);
-                    tempName = "../hva_som_skjer/wwwroot/"+tempName;
-                    System.IO.File.Delete(tempName);
+                        System.IO.File.Delete(oldFilePath);
                 }
             }catch
             {
@@ -453,45 +450,45 @@ namespace hva_som_skjer.Controllers
 
             if(logo == null)
             {
-                club.Image = "../../images/LogoPictures/tempLogo.png";
+                club.Image = "/images/LogoPictures/tempLogo.png";
             }else
             {
                 try
                 {
                     string filename = string.Format(@"{0}.png", Guid.NewGuid());
-                    club.Image = "../../images/LogoPictures/"+filename;
-                    _db.SaveChanges();
+                    string filePath = "/images/LogoPictures/"+filename;
 
                     var localPath = Directory.GetCurrentDirectory();
-                    string filePath = "\\wwwroot\\images\\LogoPictures\\"+filename;
-                    string wholePath = localPath+filePath;
-                    using (var stream = new FileStream(wholePath, FileMode.Create))
+                    localPath += "/wwwroot/" + filePath;
+
+                    using (var stream = new FileStream(localPath, FileMode.Create))
                     {
                         await logo.CopyToAsync(stream);
                     }
+                    club.Image = "/images/LogoPictures/" + filename;
                 
-                }catch{ club.Image = "../../images/LogoPictures/tempLogo.png";}  
+                }catch{ club.Image = "/images/LogoPictures/tempLogo.png";}  
             }
             if(banner == null)
             {
-                club.BannerImage = "../../images/BannerPictures/defaultBanner.png";
+                club.BannerImage = "/images/BannerPictures/defaultBanner.png";
             }else
             {
                 try
                 {
                     string filename = string.Format(@"{0}.png", Guid.NewGuid());
-                    club.BannerImage = "../../images/BannerPictures/"+filename;
-                    _db.SaveChanges();
+                    string filePath = "/images/BannerPictures/" + filename;
 
                     var localPath = Directory.GetCurrentDirectory();
-                    string filePath = "\\wwwroot\\images\\BannerPictures\\"+filename;
-                    string wholePath = localPath+filePath;
-                    using (var stream = new FileStream(wholePath, FileMode.Create))
+                    localPath += "/wwwroot/" + filePath;
+
+                    using (var stream = new FileStream(localPath, FileMode.Create))
                     {
                         await banner.CopyToAsync(stream);
                     }
+                    club.BannerImage = "/images/BannerPictures/" + filename;
                 
-                }catch{ club.BannerImage = "../../images/BannerPictures/defaultBanner.png";}
+                }catch{ club.BannerImage = "/images/BannerPictures/defaultBanner.png";}
             }
             
             var user = await _um.GetUserAsync(User);
